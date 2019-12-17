@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/model.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 String getWeatherIcon(WeatherCondition condition) {
   switch (condition) {
@@ -24,17 +25,33 @@ String getWeatherIcon(WeatherCondition condition) {
   }
 }
 
-TextStyle _iconStyle = TextStyle(
-  fontSize: 20,
-  fontFamily: 'WeatherIcons',
-);
-TextStyle _textStyle = TextStyle(
-  fontFamily: 'RobotoMono',
-  fontSize: 20,
-);
+IconData getWeatherIcon2(WeatherCondition condition) {
+  switch (condition) {
+    case WeatherCondition.cloudy:
+      return FontAwesomeIcons.cloud;
+      break;
+    case WeatherCondition.foggy:
+      return FontAwesomeIcons.smog;
+      break;
+    case WeatherCondition.rainy:
+      return FontAwesomeIcons.cloudRain;
+      break;
+    case WeatherCondition.snowy:
+      return FontAwesomeIcons.snowflake;
+      break;
+    case WeatherCondition.thunderstorm:
+      return FontAwesomeIcons.bolt;
+      break;
+    case WeatherCondition.sunny:
+    default:
+      return FontAwesomeIcons.sun;
+  }
+}
 
 class AdditionalInfo extends StatelessWidget {
   const AdditionalInfo({
+    @required this.iconColor,
+    @required this.textColor,
     @required this.temperature,
     @required this.temperatureRange,
     @required this.location,
@@ -42,6 +59,8 @@ class AdditionalInfo extends StatelessWidget {
     @required this.condition,
   });
 
+  final Color iconColor;
+  final Color textColor;
   final String temperature;
   final String temperatureRange;
   final String location;
@@ -50,14 +69,30 @@ class AdditionalInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final TextStyle _iconStyle = TextStyle(
+      fontFamily: 'WeatherIcons',
+      color: iconColor,
+      fontSize: 30,
+    );
+    final TextStyle _textStyle = TextStyle(
+      fontFamily: 'RobotoMono',
+      color: textColor,
+      fontSize: 30,
+    );
+
     return Center(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Row(
             children: <Widget>[
-              Text(
-                getWeatherIcon(condition),
-                style: _iconStyle,
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  getWeatherIcon(condition),
+                  style: _iconStyle,
+                )
               ),
               Text(
                 conditionString,
@@ -67,21 +102,13 @@ class AdditionalInfo extends StatelessWidget {
           ),
           Row(
             children: <Widget>[
-              Text(
-                '\u{f055}',
-                style: _iconStyle,
-              ),
-              Text(
-                temperatureRange,
-                style: _textStyle,
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                '\u{f03c}',
-                style: _iconStyle,
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Icon(
+                  FontAwesomeIcons.thermometerThreeQuarters,
+                  color: iconColor,
+                  size: 40,
+                ),
               ),
               Text(
                 temperature,
@@ -91,9 +118,13 @@ class AdditionalInfo extends StatelessWidget {
           ),
           Row(
             children: <Widget>[
-              Text(
-                '\u{f0b1}',
-                style: _iconStyle,
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Icon(
+                  FontAwesomeIcons.mapMarkerAlt,
+                  color: iconColor,
+                  size: 40,
+                ),
               ),
               Text(
                 location,

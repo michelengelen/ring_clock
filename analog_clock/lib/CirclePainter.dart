@@ -27,6 +27,11 @@ class CirclePainter extends CustomPainter {
     final double radius = math.min(size.width / 2 - inset, size.height / 2 - inset);
 
     final Rect rect = Rect.fromCircle(center: center, radius: radius);
+    final Rect dotRect = Rect.fromCircle(
+      center: center + Offset(math.cos(-math.pi / 2.0 + angleRadians), math.sin(-math.pi / 2.0 + angleRadians)) * radius,
+      radius: lineWidth * 1.15
+    );
+    final dotPath = Path()..addOval(dotRect);
 
     final Paint emptyPaint = Paint()
       ..color = color
@@ -42,9 +47,10 @@ class CirclePainter extends CustomPainter {
 
     canvas.drawCircle(center, radius, emptyPaint);
     canvas.drawArc(rect, -math.pi / 2.0, angleRadians, false, fillPaint);
+    canvas.drawShadow(dotPath, Colors.black, 2.0, true);
     canvas.drawCircle(
       center + Offset(math.cos(-math.pi / 2.0 + angleRadians), math.sin(-math.pi / 2.0 + angleRadians)) * radius,
-      lineWidth * 2.0,
+      lineWidth,
       dotPaint,
     );
   }

@@ -92,7 +92,7 @@ class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerPr
           painter: CirclePainter(
             lineWidth: widget.thickness,
             angleRadians: _animation.value,
-            color: Colors.white,
+            color: widget.color,
             inset: widget.inset,
             fillColor: widget.fillColor,
           ),

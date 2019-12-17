@@ -43,7 +43,7 @@ class _DrawnSecondRingState extends State<DrawnSecondRing> with SingleTickerProv
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 1000),
     )..addListener(() {
         setState(() {});
       });
@@ -54,7 +54,7 @@ class _DrawnSecondRingState extends State<DrawnSecondRing> with SingleTickerProv
     );
 
     _animation = _tween.animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOutQuad, reverseCurve: Curves.easeInOut),
+      CurvedAnimation(parent: _controller, curve: Curves.bounceOut),
     );
 
     _controller.forward();
@@ -92,7 +92,7 @@ class _DrawnSecondRingState extends State<DrawnSecondRing> with SingleTickerProv
           painter: CirclePainter(
             lineWidth: widget.thickness,
             angleRadians: _animation.value,
-            color: Colors.white,
+            color: widget.color,
             inset: widget.inset,
             fillColor: widget.fillColor,
           ),

@@ -72,7 +72,7 @@ class _DrawnHoursRingState extends State<DrawnHoursRing> with SingleTickerProvid
     _controller.reset();
     _tween.begin = oldWidget.angleRadians;
 
-    if (widget.angleRadians == 0.0) {
+    if (widget.angleRadians == 0.0 && oldWidget.angleRadians != widget.angleRadians) {
       _tween.end = math.pi * 2;
       _controller.forward();
     } else {
@@ -90,10 +90,10 @@ class _DrawnHoursRingState extends State<DrawnHoursRing> with SingleTickerProvid
       child: SizedBox.expand(
         child: CustomPaint(
           painter: CirclePainter(
-            color: Colors.white,
             lineWidth: widget.thickness,
             angleRadians: _animation.value,
             inset: widget.inset,
+            color: widget.color,
             fillColor: widget.fillColor,
           ),
         ),
