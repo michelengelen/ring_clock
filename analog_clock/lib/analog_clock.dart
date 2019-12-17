@@ -4,21 +4,26 @@
 
 import 'dart:async';
 
-import 'package:flutter_clock_helper/model.dart';
+import 'package:analog_clock/AdditionInfo.dart';
+import 'package:analog_clock/DrawnClockBase.dart';
+import 'package:analog_clock/DrawnHourBlocks.dart';
+import 'package:analog_clock/DrawnHoursRing.dart';
+import 'package:analog_clock/DrawnMinuteBlocks.dart';
+import 'package:analog_clock/DrawnMinutesRing.dart';
+import 'package:analog_clock/DrawnSecondsRing.dart';
+import 'package:analog_clock/weather_icons/Cloud.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_clock_helper/model.dart';
 import 'package:intl/intl.dart';
 import 'package:vector_math/vector_math_64.dart' show radians;
 
-import 'container_hand.dart';
-import 'drawn_hand.dart';
-
 /// Total distance traveled by a second or a minute hand, each second or minute,
 /// respectively.
-final radiansPerTick = radians(360 / 60);
+final double radiansPerTick = radians(360 / 60);
 
 /// Total distance traveled by an hour hand, each hour, in radians.
-final radiansPerHour = radians(360 / 12);
+final double radiansPerHour = radians(360 / 12);
 
 /// A basic analog clock.
 ///
@@ -33,11 +38,12 @@ class AnalogClock extends StatefulWidget {
 }
 
 class _AnalogClockState extends State<AnalogClock> {
-  var _now = DateTime.now();
-  var _temperature = '';
-  var _temperatureRange = '';
-  var _condition = '';
-  var _location = '';
+  DateTime _now = DateTime.now();
+  String _temperature = '';
+  String _temperatureRange = '';
+  WeatherCondition _condition = WeatherCondition.sunny;
+  String _conditionString = '';
+  String _location = '';
   Timer _timer;
 
   @override
@@ -69,7 +75,8 @@ class _AnalogClockState extends State<AnalogClock> {
     setState(() {
       _temperature = widget.model.temperatureString;
       _temperatureRange = '(${widget.model.low} - ${widget.model.highString})';
-      _condition = widget.model.weatherString;
+      _condition = widget.model.weatherCondition;
+      _conditionString = widget.model.weatherString;
       _location = widget.model.location;
     });
   }
@@ -88,93 +95,104 @@ class _AnalogClockState extends State<AnalogClock> {
 
   @override
   Widget build(BuildContext context) {
-    // There are many ways to apply themes to your clock. Some are:
-    //  - Inherit the parent Theme (see ClockCustomizer in the
-    //    flutter_clock_helper package).
-    //  - Override the Theme.of(context).colorScheme.
-    //  - Create your own [ThemeData], demonstrated in [AnalogClock].
-    //  - Create a map of [Color]s to custom keys, demonstrated in
-    //    [DigitalClock].
-    final customTheme = Theme.of(context).brightness == Brightness.light
+    final ThemeData customTheme = Theme.of(context).brightness == Brightness.light
         ? Theme.of(context).copyWith(
-            // Hour hand.
-            primaryColor: Color(0xFF4285F4),
-            // Minute hand.
-            highlightColor: Color(0xFF8AB4F8),
-            // Second hand.
-            accentColor: Color(0xFF669DF6),
-            backgroundColor: Color(0xFFD2E3FC),
+            primaryColor: Colors.lime,
+            highlightColor: Colors.blueGrey,
+            accentColor: Colors.blueGrey,
+            backgroundColor: Colors.grey[900],
           )
         : Theme.of(context).copyWith(
-            primaryColor: Color(0xFFD2E3FC),
-            highlightColor: Color(0xFF4285F4),
-            accentColor: Color(0xFF8AB4F8),
-            backgroundColor: Color(0xFF3C4043),
+            // Seconds Ring and Separator
+            // #E63F3E
+            primaryColor: Colors.deepOrange,
+            // active Ring
+            highlightColor: Colors.grey,
+            // inactive Ring.
+            accentColor: Colors.grey,
+            backgroundColor: Colors.grey[200],
           );
 
-    final time = DateFormat.Hms().format(DateTime.now());
-    final weatherInfo = DefaultTextStyle(
-      style: TextStyle(color: customTheme.primaryColor),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(_temperature),
-          Text(_temperatureRange),
-          Text(_condition),
-          Text(_location),
-        ],
-      ),
-    );
+    final String time = DateFormat.Hms().format(DateTime.now());
+    final int currentHour = _now.hour >= 12 ? _now.hour - 12 : _now.hour;
 
     return Semantics.fromProperties(
       properties: SemanticsProperties(
         label: 'Analog clock with time $time',
         value: time,
       ),
-      child: Container(
-        color: customTheme.backgroundColor,
-        child: Stack(
-          children: [
-            // Example of a hand drawn with [CustomPainter].
-            DrawnHand(
-              color: customTheme.accentColor,
-              thickness: 4,
-              size: 1,
-              angleRadians: _now.second * radiansPerTick,
-            ),
-            DrawnHand(
-              color: customTheme.highlightColor,
-              thickness: 16,
-              size: 0.9,
-              angleRadians: _now.minute * radiansPerTick,
-            ),
-            // Example of a hand drawn with [Container].
-            ContainerHand(
-              color: Colors.transparent,
-              size: 0.5,
-              angleRadians: _now.hour * radiansPerHour +
-                  (_now.minute / 60) * radiansPerHour,
-              child: Transform.translate(
-                offset: Offset(0.0, -60.0),
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final double squareLength =
+              constraints.maxWidth > constraints.maxHeight ? constraints.maxHeight : constraints.maxWidth;
+
+          final double baseWidth = squareLength / 6;
+          final double minuteThickness = baseWidth / 3.0;
+          const double secondThickness = 8.0;
+
+          return Flex(direction: Axis.horizontal, crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
+            Expanded(
+                flex: 3,
                 child: Container(
-                  width: 32,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: customTheme.primaryColor,
+                  color: customTheme.backgroundColor,
+                  padding: EdgeInsets.all(baseWidth),
+                  child: Stack(
+                    children: <Widget>[
+                      DrawnClockBase(
+                        bgColor: customTheme.backgroundColor,
+                        width: baseWidth,
+                      ),
+                      DrawnMinutesBlocks(
+                        thickness: minuteThickness,
+                        inset: -minuteThickness / 2,
+                        minute: _now.minute,
+                      ),
+                      DrawnHourBlocks(
+                        thickness: minuteThickness,
+                        inset: baseWidth / 2 - minuteThickness / 2,
+                        hour: currentHour,
+                      ),
+                      DrawnSecondRing(
+                        color: Colors.white10,
+                        fillColor: Colors.white,
+                        thickness: secondThickness,
+                        inset: -(baseWidth / 2.0),
+                        angleRadians: _now.second * radiansPerTick,
+                      ),
+//                      DrawnMinutesRing(
+//                        color: Colors.white10,
+//                        fillColor: Colors.white,
+//                        thickness: secondThickness * 1.5,
+//                        inset: -minuteThickness / 3,
+//                        angleRadians: _now.minute * radiansPerTick,
+//                      ),
+//                      DrawnHoursRing(
+//                        color: Colors.white10,
+//                        fillColor: Colors.white,
+//                        thickness: secondThickness * 2.0,
+//                        inset: minuteThickness,
+//                        angleRadians: currentHour * radiansPerHour,
+//                      ),
+//                      InnerClock(
+//                        size: baseWidth,
+//                        hour: currentHour,
+//                        minute: _now.minute,
+//                      ),
+                    ],
                   ),
-                ),
+                )),
+            Expanded(
+              flex: 2,
+              child: AdditionalInfo(
+                temperature: _temperature,
+                temperatureRange: _temperatureRange,
+                condition: _condition,
+                conditionString: _conditionString,
+                location: _location,
               ),
             ),
-            Positioned(
-              left: 0,
-              bottom: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: weatherInfo,
-              ),
-            ),
-          ],
-        ),
+          ]);
+        },
       ),
     );
   }
