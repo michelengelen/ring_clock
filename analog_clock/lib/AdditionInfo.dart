@@ -25,12 +25,12 @@ String getWeatherIcon(WeatherCondition condition) {
 }
 
 TextStyle _iconStyle = TextStyle(
-  fontSize: 60,
+  fontSize: 20,
   fontFamily: 'WeatherIcons',
 );
 TextStyle _textStyle = TextStyle(
   fontFamily: 'RobotoMono',
-  fontSize: 40,
+  fontSize: 20,
 );
 
 class AdditionalInfo extends StatelessWidget {
@@ -51,7 +51,7 @@ class AdditionalInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
+      child: Row(
         children: <Widget>[
           Row(
             children: <Widget>[

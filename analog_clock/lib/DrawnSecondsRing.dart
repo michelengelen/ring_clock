@@ -67,26 +67,15 @@ class _DrawnSecondRingState extends State<DrawnSecondRing> with SingleTickerProv
     super.dispose();
   }
 
-  void resetSeconds(AnimationStatus status) {
-    if (status == AnimationStatus.completed && _tween.end == math.pi * 2) {
-      _controller.reset();
-      _tween.end = 0.0;
-      _tween.begin = -math.pi * 2;
-      _controller.forward();
-    }
-  }
-
   @override
   void didUpdateWidget(DrawnSecondRing oldWidget) {
     _controller.reset();
     _tween.begin = oldWidget.angleRadians;
 
     if (widget.angleRadians == 0.0) {
-      _animation.addStatusListener(resetSeconds);
       _tween.end = math.pi * 2;
       _controller.forward();
     } else {
-      _animation.removeStatusListener(resetSeconds);
       _tween.end = widget.angleRadians;
       _controller.forward();
     }

@@ -5,13 +5,9 @@
 import 'dart:async';
 
 import 'package:analog_clock/AdditionInfo.dart';
-import 'package:analog_clock/DrawnClockBase.dart';
-import 'package:analog_clock/DrawnHourBlocks.dart';
 import 'package:analog_clock/DrawnHoursRing.dart';
-import 'package:analog_clock/DrawnMinuteBlocks.dart';
 import 'package:analog_clock/DrawnMinutesRing.dart';
 import 'package:analog_clock/DrawnSecondsRing.dart';
-import 'package:analog_clock/weather_icons/Cloud.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clock_helper/model.dart';
@@ -127,71 +123,125 @@ class _AnalogClockState extends State<AnalogClock> {
               constraints.maxWidth > constraints.maxHeight ? constraints.maxHeight : constraints.maxWidth;
 
           final double baseWidth = squareLength / 6;
-          final double minuteThickness = baseWidth / 3.0;
+          final double minuteThickness = 6.0;
           const double secondThickness = 8.0;
 
-          return Flex(direction: Axis.horizontal, crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-            Expanded(
-                flex: 3,
-                child: Container(
-                  color: customTheme.backgroundColor,
-                  padding: EdgeInsets.all(baseWidth),
-                  child: Stack(
-                    children: <Widget>[
-                      DrawnClockBase(
-                        bgColor: customTheme.backgroundColor,
-                        width: baseWidth,
-                      ),
-                      DrawnMinutesBlocks(
-                        thickness: minuteThickness,
-                        inset: -minuteThickness / 2,
-                        minute: _now.minute,
-                      ),
-                      DrawnHourBlocks(
-                        thickness: minuteThickness,
-                        inset: baseWidth / 2 - minuteThickness / 2,
-                        hour: currentHour,
-                      ),
-                      DrawnSecondRing(
-                        color: Colors.white10,
-                        fillColor: Colors.white,
-                        thickness: secondThickness,
-                        inset: -(baseWidth / 2.0),
-                        angleRadians: _now.second * radiansPerTick,
-                      ),
-//                      DrawnMinutesRing(
-//                        color: Colors.white10,
-//                        fillColor: Colors.white,
-//                        thickness: secondThickness * 1.5,
-//                        inset: -minuteThickness / 3,
-//                        angleRadians: _now.minute * radiansPerTick,
-//                      ),
-//                      DrawnHoursRing(
-//                        color: Colors.white10,
-//                        fillColor: Colors.white,
-//                        thickness: secondThickness * 2.0,
-//                        inset: minuteThickness,
-//                        angleRadians: currentHour * radiansPerHour,
-//                      ),
+          return Flex(
+            direction: Axis.vertical,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Expanded(
+                  flex: 3,
+                  child: Container(
+                    color: customTheme.backgroundColor,
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(48),
+                            child: Stack(
+                              children: <Widget>[
+                                DrawnHoursRing(
+                                  color: Colors.white10,
+                                  fillColor: Colors.white,
+                                  thickness: minuteThickness,
+                                  inset: 0,
+                                  angleRadians: currentHour * radiansPerHour,
+                                ),
+                                Center(
+                                  child: Text(
+                                    _now.hour < 10 ? '0${_now.hour}' : '${_now.hour}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 120,
+                                      fontWeight: FontWeight.w100,
+                                      fontFamily: 'RobotoMono'
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(48),
+                            child: Stack(
+                              children: <Widget>[
+                                DrawnMinutesRing(
+                                  color: Colors.white10,
+                                  fillColor: Colors.white,
+                                  thickness: minuteThickness,
+                                  inset: 0,
+                                  angleRadians: _now.minute * radiansPerTick,
+                                ),
+                                Center(
+                                  child: Text(
+                                    _now.minute < 10 ? '0${_now.minute}' : '${_now.minute}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 120,
+                                      fontWeight: FontWeight.w100,
+                                      fontFamily: 'RobotoMono'
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(48),
+                            child: Stack(
+                              children: <Widget>[
+                                DrawnSecondRing(
+                                  color: Colors.white10,
+                                  fillColor: Colors.white,
+                                  thickness: minuteThickness,
+                                  inset: 0,
+                                  angleRadians: _now.second * radiansPerTick,
+                                ),
+                                Center(
+                                  child: Text(
+                                    _now.second < 10 ? '0${_now.second}' : '${_now.second}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 120,
+                                      fontWeight: FontWeight.w100,
+                                      fontFamily: 'RobotoMono'
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
 //                      InnerClock(
 //                        size: baseWidth,
 //                        hour: currentHour,
 //                        minute: _now.minute,
 //                      ),
-                    ],
-                  ),
-                )),
-            Expanded(
-              flex: 2,
-              child: AdditionalInfo(
-                temperature: _temperature,
-                temperatureRange: _temperatureRange,
-                condition: _condition,
-                conditionString: _conditionString,
-                location: _location,
+                      ],
+                    ),
+                  )),
+              Expanded(
+                flex: 1,
+                child: AdditionalInfo(
+                  temperature: _temperature,
+                  temperatureRange: _temperatureRange,
+                  condition: _condition,
+                  conditionString: _conditionString,
+                  location: _location,
+                ),
               ),
-            ),
-          ]);
+            ],
+          );
         },
       ),
     );

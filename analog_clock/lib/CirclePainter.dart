@@ -44,7 +44,7 @@ class CirclePainter extends CustomPainter {
     canvas.drawArc(rect, -math.pi / 2.0, angleRadians, false, fillPaint);
     canvas.drawCircle(
       center + Offset(math.cos(-math.pi / 2.0 + angleRadians), math.sin(-math.pi / 2.0 + angleRadians)) * radius,
-      lineWidth * 0.75,
+      lineWidth * 2.0,
       dotPaint,
     );
   }
