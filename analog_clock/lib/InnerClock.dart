@@ -40,7 +40,7 @@ class InnerClock extends StatelessWidget {
               child: ClipPath(
                 clipper: TimeClipper(edge: clippingEdges.BOTTOM_RIGHT),
                 child: Padding(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(15),
                   child: Text(_hour, style: style),
                 ),
               ),
@@ -58,7 +58,7 @@ class InnerClock extends StatelessWidget {
               child: ClipPath(
                 clipper: TimeClipper(edge: clippingEdges.TOP_LEFT),
                 child: Padding(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(15),
                   child: Text(_minute, style: style),
                 ),
               ),

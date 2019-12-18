@@ -78,11 +78,11 @@ class AdditionalInfo extends StatelessWidget {
     final TextStyle _textStyle = TextStyle(
       fontFamily: 'RobotoMono',
       color: textColor,
-      fontSize: 30,
+      fontSize: 20,
     );
 
     return Center(
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Row(

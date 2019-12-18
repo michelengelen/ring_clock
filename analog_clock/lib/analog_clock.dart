@@ -94,15 +94,16 @@ class _AnalogClockState extends State<AnalogClock> {
     final ThemeData customTheme = Theme.of(context).brightness == Brightness.light
         ? Theme.of(context).copyWith(
             primaryColor: Colors.lime,
-            highlightColor: Colors.grey[100],
+            highlightColor: Colors.grey[800],
+            indicatorColor: Colors.grey[400],
             accentColor: Colors.lime[600],
             backgroundColor: Colors.white,
           )
         : Theme.of(context).copyWith(
-            primaryColor: Colors.deepOrange,
+            primaryColor: Colors.amberAccent,
             highlightColor: Colors.grey[200],
             indicatorColor: Colors.grey[800],
-            accentColor: Colors.deepOrangeAccent[700],
+            accentColor: Colors.amberAccent[700],
             backgroundColor: Colors.grey[900],
           );
 
@@ -111,9 +112,9 @@ class _AnalogClockState extends State<AnalogClock> {
 
     final TextStyle clockTextStyle = TextStyle(
       color: customTheme.highlightColor,
-      fontSize: 120,
-      fontWeight: FontWeight.w100,
-      fontFamily: 'RobotoMono',
+      fontSize: 90,
+      fontWeight: FontWeight.w300,
+      fontFamily: 'RobotoMono'
     );
 
     return Semantics.fromProperties(
@@ -123,102 +124,58 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          const double minuteThickness = 10.0;
+          const double minuteThickness = 6.0;
 
           return Flex(
-            direction: Axis.vertical,
+            direction: Axis.horizontal,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Expanded(
                 flex: 3,
-                child: Container(
-                  color: customTheme.backgroundColor,
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.all(96),
+                  child: Stack(
                     children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(48),
-                          child: Stack(
-                            children: <Widget>[
-                              DrawnHoursRing(
-                                color: customTheme.indicatorColor,
-                                fillColor: customTheme.accentColor,
-                                thickness: minuteThickness,
-                                inset: 0,
-                                angleRadians: currentHour * radiansPerHour,
-                              ),
-                              Center(
-                                child: Text(
-                                  _now.hour < 10 ? '0${_now.hour}' : '${_now.hour}',
-                                  style: clockTextStyle,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      DrawnHoursRing(
+                        color: Colors.black12,
+                        fillColor: customTheme.accentColor,
+                        thickness: minuteThickness,
+                        inset: minuteThickness * -4.0,
+                        angleRadians: currentHour * radiansPerHour,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(48),
-                          child: Stack(
-                            children: <Widget>[
-                              DrawnMinutesRing(
-                                color: customTheme.indicatorColor,
-                                fillColor: customTheme.accentColor,
-                                thickness: minuteThickness,
-                                inset: 0,
-                                angleRadians: _now.minute * radiansPerTick,
-                              ),
-                              Center(
-                                child: Text(
-                                  _now.minute < 10 ? '0${_now.minute}' : '${_now.minute}',
-                                  style: clockTextStyle,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      DrawnMinutesRing(
+                        color: Colors.black12,
+                        fillColor: customTheme.accentColor,
+                        thickness: minuteThickness,
+                        inset: 0,
+                        angleRadians: _now.minute * radiansPerTick,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(48),
-                          child: Stack(
-                            children: <Widget>[
-                              DrawnSecondRing(
-                                color: customTheme.indicatorColor,
-                                fillColor: customTheme.accentColor,
-                                thickness: minuteThickness,
-                                inset: 0,
-                                angleRadians: _now.second * radiansPerTick,
-                              ),
-                              Center(
-                                child: Text(
-                                  _now.second < 10 ? '0${_now.second}' : '${_now.second}',
-                                  style: clockTextStyle,
-                                ),
-                              ),
-                            ],
-                          ),
+                      DrawnSecondRing(
+                        color: Colors.black12,
+                        fillColor: customTheme.accentColor,
+                        thickness: minuteThickness,
+                        inset: minuteThickness * 4.0,
+                        angleRadians: _now.second * radiansPerTick,
+                      ),
+//                      Center(
+//                        child: InnerClock(
+//                          size: constraints.maxWidth / 7.0,
+//                          hour: currentHour,
+//                          minute: _now.minute,
+//                        ),
+//                      ),
+                      Center(
+                        child: Text(
+                          '${_now.hour}:${_now.minute}',
+                          style: clockTextStyle
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              Divider(
-                height: 0.0,
-                thickness: 5.0,
-                endIndent: 250.0,
-                indent: 250.0,
-                color: customTheme.primaryColor,
-              ),
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: Container(
                   color: customTheme.highlightColor,
                   child: AdditionalInfo(

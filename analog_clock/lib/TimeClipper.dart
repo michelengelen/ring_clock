@@ -15,16 +15,16 @@ class TimeClipper extends CustomClipper<Path> {
     final double clippingAmount = height / 3;
     switch (edge) {
       case clippingEdges.BOTTOM_LEFT:
-        path.lineTo(width, 0.0);
-        path.lineTo(width, height);
+        path.lineTo(width * 1.5, 0.0);
+        path.lineTo(width * 1.5, height);
         path.lineTo(width - clippingAmount, height);
-        path.lineTo(0.0, 0.0);
         path.close();
         break;
       case clippingEdges.BOTTOM_RIGHT:
         path.lineTo(width, 0.0);
         path.lineTo(width - clippingAmount, height);
-        path.lineTo(0.0, height);
+        path.lineTo(-width, height);
+        path.lineTo(-width, 0.0);
         path.close();
         break;
       case clippingEdges.TOP_LEFT:
@@ -46,7 +46,9 @@ class TimeClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(TimeClipper oldClipper) => false;
+  bool shouldReclip(TimeClipper oldClipper) {
+    return true;
+  }
 }
 
 enum clippingEdges {
