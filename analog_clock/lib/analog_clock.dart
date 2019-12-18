@@ -124,7 +124,7 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          const double minuteThickness = 6.0;
+          const double minuteThickness = 12.0;
 
           return Flex(
             direction: Axis.horizontal,
