@@ -19,18 +19,32 @@ class DrawnMinutesRing extends StatefulWidget {
         assert(arrowSize != null),
         assert(backgroundColor != null);
 
+  /// the current angle
   final double angleRadians;
+
+  /// arrow-size
   final double arrowSize;
+
+  /// the amount of space between the rings
+  /// (should be equal to the baseWidth of the [DrawnClockBase])
   final double inset;
+
+  /// rhe backgroundColor from the customTheme
   final Color backgroundColor;
 
   @override
   State<StatefulWidget> createState() => _DrawnMinutesRingState();
 }
 
+/// [State] to make animation of clock-rings possible
 class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerProviderStateMixin {
+  /// the [AnimationController] responsible for the animation
   AnimationController _controller;
+
+  /// [Tween] for calculating the correct values
   Tween<double> _tween;
+
+  /// [Animation] which holds the values
   Animation<double> _animation;
 
   @override
@@ -42,13 +56,14 @@ class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerPr
         setState(() {});
       });
 
+    /// when initiating the [State] set both [_tween] values to the initial value
     _tween = Tween<double>(
       begin: widget.angleRadians,
       end: widget.angleRadians,
     );
 
     _animation = _tween.animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOutQuad, reverseCurve: Curves.easeInOut),
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOutCubic),
     );
 
     _controller.forward();
@@ -66,7 +81,11 @@ class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerPr
     _controller.reset();
     _tween.begin = oldWidget.angleRadians;
 
+    /// just letting it to the values would result in strange
+    /// animations once the full second/minute/hour was reached
     if (widget.angleRadians == 0.0 && oldWidget.angleRadians != 0.0) {
+      /// if the new angleRadians is 0.0 (meaning it is a full minute/hour)
+      /// just set it to `math.pi * 2` (which is basically the same as `0.0`)
       _tween.end = math.pi * 2;
       _controller.forward();
     } else {
