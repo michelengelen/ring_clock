@@ -3,8 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 /// [CustomPainter] that draws the base of the clock below the rings.
-class ClockBasePainter extends CustomPainter {
-  ClockBasePainter({
+class _ClockBasePainter extends CustomPainter {
+  _ClockBasePainter({
     @required this.primaryColor,
     @required this.accentColor,
     @required this.tickColor,
@@ -76,7 +76,7 @@ class ClockBasePainter extends CustomPainter {
     final double _tickPadding = baseWidth * 0.25;
     final double _tickAngle = sweepRadians / 60;
 
-    /// save the canvas up until now
+    /// save the canvas
     canvas.save();
 
     /// the [Paint] used to draw the ticks
@@ -108,13 +108,14 @@ class ClockBasePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(ClockBasePainter oldDelegate) {
+  bool shouldRepaint(_ClockBasePainter oldDelegate) {
     return oldDelegate.primaryColor != primaryColor ||
         oldDelegate.accentColor != accentColor ||
         oldDelegate.baseWidth != baseWidth;
   }
 }
 
+/// Implementation class for the [_ClockBasePainter]
 class DrawnClockBase extends StatelessWidget {
   const DrawnClockBase({
     @required this.primaryColor,
@@ -136,7 +137,7 @@ class DrawnClockBase extends StatelessWidget {
     return Container(
       child: SizedBox.expand(
         child: CustomPaint(
-          painter: ClockBasePainter(
+          painter: _ClockBasePainter(
             primaryColor: primaryColor,
             accentColor: accentColor,
             tickColor: tickColor,
