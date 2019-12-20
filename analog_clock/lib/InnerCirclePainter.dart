@@ -72,18 +72,11 @@ class CirclePainter extends CustomPainter {
       ..color = backgroundColor
       ..style = PaintingStyle.fill;
 
-    /// [Paint] for the shadow
-    final Paint _shadowPaint = Paint()
-      ..color = Colors.black38
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 8.0
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5.0);
-
     /// Steps in drawing the inner circle:
     ///   1. draw the shadow first
     ///   2. draw the inner circle
     canvas
-      ..drawPath(_innerPath, _shadowPaint)
+    ..drawShadow(_innerPath, Colors.black, 5.0, true)
       ..drawPath(_innerPath, _fillPaint);
   }
 

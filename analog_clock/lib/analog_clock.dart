@@ -36,7 +36,8 @@ class AnalogClock extends StatefulWidget {
 class _AnalogClockState extends State<AnalogClock> {
   DateTime _now = DateTime.now();
   String _temperature = '';
-  String _temperatureRange = '';
+  String _temperatureMin = '';
+  String _temperatureMax = '';
   WeatherCondition _condition = WeatherCondition.sunny;
   String _conditionString = '';
   String _location = '';
@@ -70,7 +71,8 @@ class _AnalogClockState extends State<AnalogClock> {
   void _updateModel() {
     setState(() {
       _temperature = widget.model.temperatureString;
-      _temperatureRange = '(${widget.model.low} - ${widget.model.highString})';
+      _temperatureMax = widget.model.highString;
+      _temperatureMin = widget.model.lowString;
       _condition = widget.model.weatherCondition;
       _conditionString = widget.model.weatherString;
       _location = widget.model.location;
@@ -117,8 +119,8 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          const double arrowSize = 25.0;
-          const double baseWidth = 80.0;
+          const double arrowSize = 20.0;
+          const double baseWidth = 60.0;
 
           return Flex(
             direction: Axis.horizontal,
@@ -159,7 +161,8 @@ class _AnalogClockState extends State<AnalogClock> {
                     iconColor: customTheme.backgroundColor,
                     textColor: customTheme.primaryColor,
                     temperature: _temperature,
-                    temperatureRange: _temperatureRange,
+                    temperatureMax: _temperatureMax,
+                    temperatureMin: _temperatureMin,
                     condition: _condition,
                     conditionString: _conditionString,
                     location: _location,

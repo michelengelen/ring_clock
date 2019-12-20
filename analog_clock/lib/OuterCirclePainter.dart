@@ -71,19 +71,12 @@ class OuterCirclePainter extends CustomPainter {
     /// [Paint] for the area around the clock
     final Paint fillPaint = Paint()..color = backgroundColor;
 
-    /// [Paint] for the shadow
-    final Paint shadowPaint = Paint()
-      ..color = Colors.black38
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 8.0
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5.0);
-
     /// Steps in this paint are as follows:
     ///   1. draw the shadow
     ///   2. inverse clip the inner area from the canvas
     ///   3. fill the clipped area with the given backgroundColor
     canvas
-      ..drawPath(_innerPath, shadowPaint)
+      ..drawShadow(_clipPath, Colors.black, 5.0, true)
       ..clipPath(_clipPath)
       ..drawPaint(fillPaint);
   }
