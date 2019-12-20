@@ -96,7 +96,7 @@ class _AnalogClockState extends State<AnalogClock> {
             primaryColor: Colors.amber,
             highlightColor: Colors.grey[800],
             indicatorColor: Colors.grey[400],
-            accentColor: Colors.amber[800],
+            accentColor: Colors.amber[700],
             backgroundColor: Colors.white,
           )
         : Theme.of(context).copyWith(
@@ -117,7 +117,8 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          const double minuteThickness = 12.0;
+          const double arrowSize = 25.0;
+          const double baseWidth = 80.0;
 
           return Flex(
             direction: Axis.horizontal,
@@ -132,14 +133,16 @@ class _AnalogClockState extends State<AnalogClock> {
                       DrawnClockBase(
                         accentColor: customTheme.accentColor,
                         primaryColor: customTheme.primaryColor,
-                        baseWidth: 80,
+                        baseWidth: baseWidth,
                       ),
                       DrawnHoursRing(
+                        arrowSize: arrowSize,
                         angleRadians: currentHour * radiansPerHour,
                         backgroundColor: customTheme.backgroundColor,
                       ),
                       DrawnMinutesRing(
-                        inset: 80,
+                        inset: baseWidth,
+                        arrowSize: arrowSize,
                         angleRadians: _now.minute * radiansPerTick,
                         backgroundColor: customTheme.backgroundColor,
                       ),

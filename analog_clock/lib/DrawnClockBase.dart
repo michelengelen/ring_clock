@@ -44,23 +44,22 @@ class ClockBasePainter extends CustomPainter {
 
     canvas.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), fillPaint);
 
-    final double tickMarkLength = baseWidth * 0.6;
-    final double basePadding = baseWidth * 0.2;
+    final double tickMarkLength = baseWidth * 0.5;
+    final double basePadding = baseWidth * 0.25;
     final double angle = 2 * math.pi / 60;
 
     canvas.save();
 
     final Paint tickPaint = Paint()
       ..color = Colors.white38
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 5.0;
+      ..style = PaintingStyle.stroke;
 
     // drawing of the ticks
     canvas.translate(center.dx, center.dy);
     for (int i = 0; i < 60; i++) {
 
       // make the stroke of the tick marker thicker
-      tickPaint.strokeWidth= i % 5 == 0 ? 12.0 : 2.0;
+      tickPaint.strokeWidth = i % 5 == 0 ? 8.0 : 2.0;
 
       canvas.drawLine(
         Offset(0.0, radius - baseWidth + basePadding),

@@ -4,7 +4,7 @@
 
 import 'dart:math' as math;
 
-import 'package:analog_clock/CirclePainter.dart';
+import 'package:analog_clock/InnerCirclePainter.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -12,14 +12,16 @@ class DrawnMinutesRing extends StatefulWidget {
   const DrawnMinutesRing({
     @required this.inset,
     @required this.angleRadians,
+    @required this.arrowSize,
     @required this.backgroundColor,
   })  : assert(inset != null),
         assert(angleRadians != null),
+        assert(arrowSize != null),
         assert(backgroundColor != null);
 
   final double angleRadians;
+  final double arrowSize;
   final double inset;
-
   final Color backgroundColor;
 
   @override
@@ -83,6 +85,7 @@ class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerPr
           painter: CirclePainter(
             inset: widget.inset,
             angleRadians: _animation.value,
+            arrowSize: widget.arrowSize,
             bgColor: widget.backgroundColor,
           ),
         ),

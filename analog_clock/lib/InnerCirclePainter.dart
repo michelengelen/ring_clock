@@ -7,13 +7,16 @@ class CirclePainter extends CustomPainter {
   CirclePainter({
     @required this.inset,
     @required this.angleRadians,
+    @required this.arrowSize,
     @required this.bgColor,
   })  : assert(inset != null),
-      assert(angleRadians != null),
-      assert(bgColor != null);
+        assert(angleRadians != null),
+        assert(arrowSize != null),
+        assert(bgColor != null);
 
   double inset;
   double angleRadians;
+  double arrowSize;
   Color bgColor;
 
   @override
@@ -23,12 +26,12 @@ class CirclePainter extends CustomPainter {
 
     final Rect rect = Rect.fromCircle(center: center, radius: radius);
 
-    final Offset arrowPointOffset = center + Offset(
-      math.cos(-math.pi / 2.0 + angleRadians),
-      math.sin(-math.pi / 2.0 + angleRadians)
-    ) * (radius + 15);
+    final Offset arrowPointOffset = center +
+        Offset(math.cos(-math.pi / 2.0 + angleRadians), math.sin(-math.pi / 2.0 + angleRadians)) * (radius + 25);
 
-    final double arrowWidth = math.pi * 2 / 80;
+    final double u = math.pi * 2 * radius;
+    final double arrowDelta = 25 / u;
+    final double arrowWidth = math.pi * 2 * arrowDelta;
 
     final double startAngle = (-math.pi / 2.0) + angleRadians + arrowWidth;
     final double sweepAngle = (math.pi * 2.0) - (2 * arrowWidth);
@@ -55,8 +58,6 @@ class CirclePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CirclePainter oldDelegate) {
-    return oldDelegate.inset != inset ||
-      oldDelegate.angleRadians != angleRadians ||
-      oldDelegate.bgColor != bgColor;
+    return oldDelegate.inset != inset || oldDelegate.angleRadians != angleRadians || oldDelegate.bgColor != bgColor;
   }
 }

@@ -11,11 +11,14 @@ import 'package:flutter/material.dart';
 class DrawnHoursRing extends StatefulWidget {
   const DrawnHoursRing({
     @required this.angleRadians,
+    @required this.arrowSize,
     @required this.backgroundColor,
   })  : assert(angleRadians != null),
+        assert(arrowSize != null),
         assert(backgroundColor != null);
 
   final double angleRadians;
+  final double arrowSize;
   final Color backgroundColor;
 
   @override
@@ -73,12 +76,12 @@ class _DrawnHoursRingState extends State<DrawnHoursRing> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-//    print('#### angleRadians value: ${_animation.value}');
     return Center(
       child: SizedBox.expand(
         child: CustomPaint(
           painter: OuterCirclePainter(
             angleRadians: _animation.value,
+            arrowSize: widget.arrowSize,
             backgroundColor: widget.backgroundColor,
           ),
         ),
