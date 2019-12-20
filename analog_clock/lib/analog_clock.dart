@@ -95,15 +95,15 @@ class _AnalogClockState extends State<AnalogClock> {
         ? Theme.of(context).copyWith(
             primaryColor: Colors.amber,
             highlightColor: Colors.grey[800],
-            indicatorColor: Colors.grey[400],
+            indicatorColor: Colors.white30,
             accentColor: Colors.amber[700],
             backgroundColor: Colors.white,
           )
         : Theme.of(context).copyWith(
-            primaryColor: Colors.deepOrange,
+            primaryColor: Colors.red,
             highlightColor: Colors.grey[200],
-            indicatorColor: Colors.grey[800],
-            accentColor: Colors.deepOrange[700],
+            indicatorColor: Colors.black26,
+            accentColor: Colors.red[800],
             backgroundColor: Colors.grey[900],
           );
 
@@ -133,6 +133,7 @@ class _AnalogClockState extends State<AnalogClock> {
                       DrawnClockBase(
                         accentColor: customTheme.accentColor,
                         primaryColor: customTheme.primaryColor,
+                        tickColor: customTheme.indicatorColor,
                         baseWidth: baseWidth,
                       ),
                       DrawnHoursRing(

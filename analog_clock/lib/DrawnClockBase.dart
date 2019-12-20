@@ -7,9 +7,11 @@ class ClockBasePainter extends CustomPainter {
   ClockBasePainter({
     @required this.primaryColor,
     @required this.accentColor,
+    @required this.tickColor,
     @required this.baseWidth,
   })  : assert(primaryColor != null),
         assert(accentColor != null),
+        assert(tickColor != null),
         assert(baseWidth != null);
 
   /// [Color] used as the base inner color-stop
@@ -17,6 +19,9 @@ class ClockBasePainter extends CustomPainter {
 
   /// [Color] used as the base outer color-stops
   final Color accentColor;
+
+  /// [Color] used for the ticks
+  final Color tickColor;
 
   /// the width the base will have
   final double baseWidth;
@@ -76,7 +81,7 @@ class ClockBasePainter extends CustomPainter {
 
     /// the [Paint] used to draw the ticks
     final Paint tickPaint = Paint()
-      ..color = Colors.white38
+      ..color = tickColor
       ..style = PaintingStyle.stroke;
 
     /// center the canvas for easier calculations
@@ -114,13 +119,16 @@ class DrawnClockBase extends StatelessWidget {
   const DrawnClockBase({
     @required this.primaryColor,
     @required this.accentColor,
+    @required this.tickColor,
     @required this.baseWidth,
   })  : assert(primaryColor != null),
         assert(accentColor != null),
+        assert(tickColor != null),
         assert(baseWidth != null);
 
   final Color primaryColor;
   final Color accentColor;
+  final Color tickColor;
   final double baseWidth;
 
   @override
@@ -131,6 +139,7 @@ class DrawnClockBase extends StatelessWidget {
           painter: ClockBasePainter(
             primaryColor: primaryColor,
             accentColor: accentColor,
+            tickColor: tickColor,
             baseWidth: baseWidth,
           ),
         ),
