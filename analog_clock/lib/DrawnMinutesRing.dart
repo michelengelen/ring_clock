@@ -86,7 +86,7 @@ class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerPr
             inset: widget.inset,
             angleRadians: _animation.value,
             arrowSize: widget.arrowSize,
-            bgColor: widget.backgroundColor,
+            backgroundColor: widget.backgroundColor,
           ),
         ),
       ),

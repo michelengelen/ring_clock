@@ -100,10 +100,10 @@ class _AnalogClockState extends State<AnalogClock> {
             backgroundColor: Colors.white,
           )
         : Theme.of(context).copyWith(
-            primaryColor: Colors.amberAccent,
+            primaryColor: Colors.deepOrange,
             highlightColor: Colors.grey[200],
             indicatorColor: Colors.grey[800],
-            accentColor: Colors.amberAccent[700],
+            accentColor: Colors.deepOrange[700],
             backgroundColor: Colors.grey[900],
           );
 
