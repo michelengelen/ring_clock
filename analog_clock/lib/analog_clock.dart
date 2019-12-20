@@ -5,9 +5,9 @@
 import 'dart:async';
 
 import 'package:analog_clock/AdditionInfo.dart';
+import 'package:analog_clock/DrawnClockBase.dart';
 import 'package:analog_clock/DrawnHoursRing.dart';
 import 'package:analog_clock/DrawnMinutesRing.dart';
-import 'package:analog_clock/DrawnSecondsRing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clock_helper/model.dart';
@@ -93,10 +93,10 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget build(BuildContext context) {
     final ThemeData customTheme = Theme.of(context).brightness == Brightness.light
         ? Theme.of(context).copyWith(
-            primaryColor: Colors.lime,
+            primaryColor: Colors.amber,
             highlightColor: Colors.grey[800],
             indicatorColor: Colors.grey[400],
-            accentColor: Colors.lime[600],
+            accentColor: Colors.amber[800],
             backgroundColor: Colors.white,
           )
         : Theme.of(context).copyWith(
@@ -109,13 +109,6 @@ class _AnalogClockState extends State<AnalogClock> {
 
     final String time = DateFormat.Hms().format(DateTime.now());
     final int currentHour = _now.hour >= 12 ? _now.hour - 12 : _now.hour;
-
-    final TextStyle clockTextStyle = TextStyle(
-      color: customTheme.highlightColor,
-      fontSize: 90,
-      fontWeight: FontWeight.w300,
-      fontFamily: 'RobotoMono'
-    );
 
     return Semantics.fromProperties(
       properties: SemanticsProperties(
@@ -132,43 +125,23 @@ class _AnalogClockState extends State<AnalogClock> {
             children: <Widget>[
               Expanded(
                 flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(96),
+                child: Container(
+                  color: customTheme.backgroundColor,
                   child: Stack(
                     children: <Widget>[
+                      DrawnClockBase(
+                        accentColor: customTheme.accentColor,
+                        primaryColor: customTheme.primaryColor,
+                        baseWidth: 80,
+                      ),
                       DrawnHoursRing(
-                        color: Colors.black12,
-                        fillColor: customTheme.accentColor,
-                        thickness: minuteThickness,
-                        inset: minuteThickness * -4.0,
                         angleRadians: currentHour * radiansPerHour,
+                        backgroundColor: customTheme.backgroundColor,
                       ),
                       DrawnMinutesRing(
-                        color: Colors.black12,
-                        fillColor: customTheme.accentColor,
-                        thickness: minuteThickness,
-                        inset: 0,
+                        inset: 80,
                         angleRadians: _now.minute * radiansPerTick,
-                      ),
-                      DrawnSecondRing(
-                        color: Colors.black12,
-                        fillColor: customTheme.accentColor,
-                        thickness: minuteThickness,
-                        inset: minuteThickness * 4.0,
-                        angleRadians: _now.second * radiansPerTick,
-                      ),
-//                      Center(
-//                        child: InnerClock(
-//                          size: constraints.maxWidth / 7.0,
-//                          hour: currentHour,
-//                          minute: _now.minute,
-//                        ),
-//                      ),
-                      Center(
-                        child: Text(
-                          '${_now.hour}:${_now.minute}',
-                          style: clockTextStyle
-                        ),
+                        backgroundColor: customTheme.backgroundColor,
                       ),
                     ],
                   ),

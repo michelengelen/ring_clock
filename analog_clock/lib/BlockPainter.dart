@@ -35,7 +35,7 @@ class BlockPainter extends CustomPainter {
 
     // drawing
     for (int i = 0; i < blocks; i++) {
-      final double start = -math.pi / 2.0;
+      const double start = -math.pi / 2.0;
       final double hourStart = start + gap + (i * (angle + 2 * gap));
 
       final List<Color> colors = <Color>[

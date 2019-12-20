@@ -10,25 +10,17 @@ import 'package:flutter/material.dart';
 @immutable
 class DrawnMinutesRing extends StatefulWidget {
   const DrawnMinutesRing({
-    @required this.color,
-    @required this.fillColor,
-    @required this.thickness,
     @required this.inset,
     @required this.angleRadians,
-  })  : assert(color != null),
-        assert(angleRadians != null);
+    @required this.backgroundColor,
+  })  : assert(inset != null),
+        assert(angleRadians != null),
+        assert(backgroundColor != null);
 
-  /// Hand color.
-  final Color color;
-  final Color fillColor;
-
-  /// The angle, in radians, at which the hand is drawn.
-  /// This angle is measured from the 12 o'clock position.
   final double angleRadians;
-
-  /// How thick the hand should be drawn, in logical pixels.
-  final double thickness;
   final double inset;
+
+  final Color backgroundColor;
 
   @override
   State<StatefulWidget> createState() => _DrawnMinutesRingState();
@@ -85,16 +77,13 @@ class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-//    print('#### angleRadians value: ${_animation.value}');
     return Center(
       child: SizedBox.expand(
         child: CustomPaint(
           painter: CirclePainter(
-            lineWidth: widget.thickness,
-            angleRadians: _animation.value,
-            color: widget.color,
             inset: widget.inset,
-            fillColor: widget.fillColor,
+            angleRadians: _animation.value,
+            bgColor: widget.backgroundColor,
           ),
         ),
       ),

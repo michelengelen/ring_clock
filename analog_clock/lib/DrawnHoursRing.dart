@@ -4,31 +4,19 @@
 
 import 'dart:math' as math;
 
-import 'package:analog_clock/CirclePainter.dart';
+import 'package:analog_clock/OuterCirclePainter.dart';
 import 'package:flutter/material.dart';
 
 @immutable
 class DrawnHoursRing extends StatefulWidget {
   const DrawnHoursRing({
-    @required this.color,
-    @required this.fillColor,
-    @required this.thickness,
-    @required this.inset,
     @required this.angleRadians,
-  })  : assert(color != null),
-        assert(angleRadians != null);
+    @required this.backgroundColor,
+  })  : assert(angleRadians != null),
+        assert(backgroundColor != null);
 
-  /// Hand color.
-  final Color color;
-  final Color fillColor;
-
-  /// The angle, in radians, at which the hand is drawn.
-  /// This angle is measured from the 12 o'clock position.
   final double angleRadians;
-
-  /// How thick the hand should be drawn, in logical pixels.
-  final double thickness;
-  final double inset;
+  final Color backgroundColor;
 
   @override
   State<StatefulWidget> createState() => _DrawnHoursRingState();
@@ -89,12 +77,9 @@ class _DrawnHoursRingState extends State<DrawnHoursRing> with SingleTickerProvid
     return Center(
       child: SizedBox.expand(
         child: CustomPaint(
-          painter: CirclePainter(
-            lineWidth: widget.thickness,
+          painter: OuterCirclePainter(
             angleRadians: _animation.value,
-            inset: widget.inset,
-            color: widget.color,
-            fillColor: widget.fillColor,
+            backgroundColor: widget.backgroundColor,
           ),
         ),
       ),

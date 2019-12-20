@@ -5,61 +5,58 @@ import 'package:flutter/material.dart';
 /// [CustomPainter] that draws a clock hand.
 class CirclePainter extends CustomPainter {
   CirclePainter({
-    @required this.lineWidth,
     @required this.inset,
     @required this.angleRadians,
-    @required this.color,
-    @required this.fillColor,
-  })  : assert(lineWidth != null),
+    @required this.bgColor,
+  })  : assert(inset != null),
       assert(angleRadians != null),
-      assert(color != null);
+      assert(bgColor != null);
 
-  double handSize;
-  double lineWidth;
   double inset;
   double angleRadians;
-  Color color;
-  Color fillColor;
+  Color bgColor;
 
   @override
   void paint(Canvas canvas, Size size) {
     final Offset center = Offset(size.width / 2, size.height / 2);
-    final double radius = math.min(size.width / 2 - inset, size.height / 2 - inset);
+    final double radius = math.min(size.width * 0.4 - inset, size.height * 0.4 - inset);
 
     final Rect rect = Rect.fromCircle(center: center, radius: radius);
-    final Rect dotRect = Rect.fromCircle(
-      center: center + Offset(math.cos(-math.pi / 2.0 + angleRadians), math.sin(-math.pi / 2.0 + angleRadians)) * radius,
-      radius: lineWidth * 1.15
-    );
-    final dotPath = Path()..addOval(dotRect);
 
-    final Paint emptyPaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = lineWidth;
+    final Offset arrowPointOffset = center + Offset(
+      math.cos(-math.pi / 2.0 + angleRadians),
+      math.sin(-math.pi / 2.0 + angleRadians)
+    ) * (radius + 15);
+
+    final double arrowWidth = math.pi * 2 / 80;
+
+    final double startAngle = (-math.pi / 2.0) + angleRadians + arrowWidth;
+    final double sweepAngle = (math.pi * 2.0) - (2 * arrowWidth);
+
+    final Path _path = Path()
+      ..addArc(rect, startAngle, sweepAngle)
+      ..lineTo(arrowPointOffset.dx, arrowPointOffset.dy)
+      ..close();
+
     final Paint fillPaint = Paint()
-      ..color = fillColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = lineWidth;
-    final Paint dotPaint = Paint()
-      ..color = fillColor
-      ..style = PaintingStyle.fill;
+      ..color = bgColor
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 2.0;
 
-    canvas.drawCircle(center, radius, emptyPaint);
-    canvas.drawArc(rect, -math.pi / 2.0, angleRadians, false, fillPaint);
-    canvas.drawShadow(dotPath, Colors.black, 2.0, true);
-    canvas.drawCircle(
-      center + Offset(math.cos(-math.pi / 2.0 + angleRadians), math.sin(-math.pi / 2.0 + angleRadians)) * radius,
-      lineWidth,
-      dotPaint,
-    );
+    final Paint shadowPaint = Paint()
+      ..color = Colors.black38
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 8.0
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6.0);
+
+    canvas.drawPath(_path, shadowPaint);
+    canvas.drawPath(_path, fillPaint);
   }
 
   @override
   bool shouldRepaint(CirclePainter oldDelegate) {
-    return oldDelegate.handSize != handSize ||
-      oldDelegate.lineWidth != lineWidth ||
+    return oldDelegate.inset != inset ||
       oldDelegate.angleRadians != angleRadians ||
-      oldDelegate.color != color;
+      oldDelegate.bgColor != bgColor;
   }
 }
