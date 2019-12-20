@@ -51,7 +51,7 @@ class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerPr
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 1500),
     )..addListener(() {
         setState(() {});
       });

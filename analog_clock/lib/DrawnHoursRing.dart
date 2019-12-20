@@ -44,10 +44,10 @@ class _DrawnHoursRingState extends State<DrawnHoursRing> with SingleTickerProvid
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 1500),
     )..addListener(() {
-      setState(() {});
-    });
+        setState(() {});
+      });
 
     /// when initiating the [State] set both [_tween] values to the initial value
     _tween = Tween<double>(
