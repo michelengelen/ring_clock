@@ -107,7 +107,7 @@ class AdditionalInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(18),
+                padding: const EdgeInsets.all(6),
                 child: Text(
                   temperature,
                   style: _textStyle.copyWith(fontSize: 50),
@@ -115,38 +115,20 @@ class AdditionalInfo extends StatelessWidget {
               ),
               Column(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        FontAwesomeIcons.longArrowAltUp,
-                        color: textColor,
-                        size: 12,
-                      ),
-                      Text(
-                        temperatureMax,
-                        style: _textStyle,
-                      ),
-                    ],
+                  Text(
+                    temperatureMax,
+                    style: _textStyle.copyWith(color: textColor.withOpacity(0.5)),
                   ),
                   Divider(
-                    height: 5.0,
-                    thickness: 15.0,
+                    height: 0.0,
+                    thickness: 5.0,
                     indent: 0.0,
                     endIndent: 0.0,
                     color: textColor,
                   ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        FontAwesomeIcons.longArrowAltDown,
-                        color: textColor,
-                        size: 12,
-                      ),
-                      Text(
-                        temperatureMin,
-                        style: _textStyle,
-                      ),
-                    ],
+                  Text(
+                    temperatureMin,
+                    style: _textStyle.copyWith(color: textColor.withOpacity(0.5)),
                   ),
                 ],
               )
@@ -155,7 +137,7 @@ class AdditionalInfo extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
+              Container(
                 padding: const EdgeInsets.all(2),
                 child: Icon(
                   FontAwesomeIcons.mapMarkerAlt,

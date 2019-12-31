@@ -98,15 +98,15 @@ class _AnalogClockState extends State<AnalogClock> {
             primaryColor: Colors.amber,
             highlightColor: Colors.grey[800],
             indicatorColor: Colors.white30,
-            accentColor: Colors.amber[700],
+            accentColor: Colors.amber[600],
             backgroundColor: Colors.grey[100],
           )
         : Theme.of(context).copyWith(
-            primaryColor: Colors.red,
+            primaryColor: Colors.deepOrange[700],
             highlightColor: Colors.grey[200],
-            indicatorColor: Colors.black26,
-            accentColor: Colors.red[800],
-            backgroundColor: Colors.grey[900],
+            indicatorColor: Colors.black12,
+            accentColor: Colors.deepOrange[800],
+            backgroundColor: Colors.blueGrey[900],
           );
 
     final String time = DateFormat.Hms().format(DateTime.now());

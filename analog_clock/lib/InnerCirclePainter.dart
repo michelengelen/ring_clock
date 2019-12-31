@@ -44,7 +44,7 @@ class CirclePainter extends CustomPainter {
 
     /// the exact spot the arrow is pointing to on the clock-base
     final Offset arrowPointOffset = center +
-      Offset(math.cos(startRadians + angleRadians), math.sin(startRadians + angleRadians)) * (radius + arrowSize);
+        Offset(math.cos(startRadians + angleRadians), math.sin(startRadians + angleRadians)) * (radius + arrowSize);
 
     /// calculate the radians of the arrow, since the radius of the
     /// inner circle is not equal to the outer circle.
@@ -76,7 +76,7 @@ class CirclePainter extends CustomPainter {
     ///   1. draw the shadow first
     ///   2. draw the inner circle
     canvas
-    ..drawShadow(_innerPath, Colors.black, 5.0, true)
+      ..drawShadow(_innerPath, Colors.black, 5.0, true)
       ..drawPath(_innerPath, _fillPaint);
   }
 
