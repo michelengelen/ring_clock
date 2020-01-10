@@ -31,11 +31,15 @@ class OuterCirclePainter extends CustomPainter {
     final double startRadians = -math.pi / 2.0;
     final double sweepRadians = math.pi * 2.0;
 
+    /// out of convenience
+    final double width = size.width;
+    final double height = size.height;
+
     /// center-Offset for later use
-    final Offset center = Offset(size.width / 2.0, size.height / 2.0);
+    final Offset center = Offset(width / 2.0, height / 2.0);
 
     /// leave 10% padding on the shortest side
-    final double radius = math.min(size.width * 0.4, size.height * 0.4);
+    final double radius = math.min(width * 0.4, height * 0.4);
 
     /// the exact spot the arrow is pointing to on the clock-base
     final Offset arrowPointOffset = center +
@@ -62,9 +66,17 @@ class OuterCirclePainter extends CustomPainter {
       ..lineTo(arrowPointOffset.dx, arrowPointOffset.dy)
       ..close();
 
-    /// draw the complete clipping-path (incl. the inner ring-path)
+    final Path _fillPath = Path()
+      ..moveTo(0.0, -20.0)
+      ..lineTo(width + (width / 4.5), -20.0)
+      ..lineTo(width, height)
+      ..lineTo(0.0, height)
+      ..lineTo(0.0, 0.0)
+      ..close();
+
+    /// combine the clipping-path (incl. the inner ring-path)
     final Path _clipPath = Path()
-      ..addRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height))
+      ..addPath(_fillPath, Offset.zero)
       ..addPath(_innerPath, Offset.zero)
       ..fillType = PathFillType.evenOdd;
 
@@ -76,7 +88,7 @@ class OuterCirclePainter extends CustomPainter {
     ///   2. inverse clip the inner area from the canvas
     ///   3. fill the clipped area with the given backgroundColor
     canvas
-      ..drawShadow(_clipPath, Colors.black, 5.0, true)
+      ..drawShadow(_clipPath, Colors.black, 6.0, true)
       ..clipPath(_clipPath)
       ..drawPaint(fillPaint);
   }

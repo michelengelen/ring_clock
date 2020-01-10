@@ -78,7 +78,7 @@ class AdditionalInfo extends StatelessWidget {
     );
 
     final TextStyle _textStyle = TextStyle(
-      fontFamily: 'FiraSans',
+      fontFamily: 'SourceSansPro',
       fontWeight: FontWeight.w300,
       color: textColor,
       fontSize: 20,

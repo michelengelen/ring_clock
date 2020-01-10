@@ -31,11 +31,15 @@ class _ClockBasePainter extends CustomPainter {
     /// to be consistent store it first
     final double sweepRadians = math.pi * 2.0;
 
+    /// out of convenience
+    final double width = size.width;
+    final double height = size.height;
+
     /// center-Offset for later use
-    final Offset center = Offset(size.width / 2.0, size.height / 2.0);
+    final Offset center = Offset(width / 2.0, height / 2.0);
 
     /// leave 10% padding on the shortest side
-    final double radius = math.min(size.width * 0.4, size.height * 0.4);
+    final double radius = math.min(width * 0.4, height * 0.4);
 
     /// [Rect] to draw the gradient
     final Rect rect = Rect.fromCircle(center: center, radius: radius);
@@ -43,7 +47,7 @@ class _ClockBasePainter extends CustomPainter {
     /// Color list to be used in the clock-base gradient
     final List<Color> _gradientColors = <Color>[
       accentColor,
-      primaryColor,
+      accentColor,
       accentColor,
     ];
 
@@ -66,10 +70,30 @@ class _ClockBasePainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..shader = _fillGradient.createShader(rect);
 
-    /// draw the rect
-    /// it fills the entire canvas - I could have used drawPaint() here,
-    /// but that is strangely not bound to the canvas-size and fills the entire screen
-    canvas.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), _fillPaint);
+    /// create a [Path] for painting the [Gradient]
+    final Path _fillPath = Path()
+      ..moveTo(0.0, -20.0)
+      ..lineTo(width + (width / 20.0), -20.0)
+      ..lineTo(width + (width / 7.0), height)
+      ..lineTo(0.0, height)
+      ..lineTo(0.0, 0.0)
+      ..close();
+
+    /// create a second [Path] for adding a bit of depth to the info section
+    final Path _accentPath = Path()
+      ..moveTo(width - 20.0, -20.0)
+      ..lineTo(width + (width / 5.0), -20.0)
+      ..lineTo(width + (width / 8.0), height)
+      ..lineTo(width - 20.0, height)
+      ..lineTo(width - 20.0, 0.0)
+      ..close();
+
+    /// first draw the shadow then draw the clock-background a layer above it
+    canvas
+      ..drawShadow(_accentPath, Colors.black, 6.0, true)
+      ..drawPath(_accentPath, Paint()..color = primaryColor)
+      ..drawShadow(_fillPath, Colors.black, 6.0, true)
+      ..drawPath(_fillPath, _fillPaint);
 
     /// prepare rendering of the tick-marks
     final double _tickLength = baseWidth * 0.5;

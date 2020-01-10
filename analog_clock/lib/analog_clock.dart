@@ -95,17 +95,17 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget build(BuildContext context) {
     final ThemeData customTheme = Theme.of(context).brightness == Brightness.light
         ? Theme.of(context).copyWith(
-            primaryColor: Colors.amber,
+            primaryColor: Colors.brown[700],
             highlightColor: Colors.grey[800],
             indicatorColor: Colors.white30,
-            accentColor: Colors.amber[600],
-            backgroundColor: Colors.grey[100],
+            accentColor: Colors.lime,
+            backgroundColor: Colors.grey[200],
           )
         : Theme.of(context).copyWith(
-            primaryColor: Colors.deepOrange[700],
+            primaryColor: Colors.white70,
             highlightColor: Colors.grey[200],
-            indicatorColor: Colors.black12,
-            accentColor: Colors.deepOrange[800],
+            indicatorColor: Colors.black38,
+            accentColor: Colors.lightGreen,
             backgroundColor: Colors.blueGrey[900],
           );
 
@@ -119,57 +119,63 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          const double arrowSize = 20.0;
-          const double baseWidth = 60.0;
+          const double baseWidth = 90.0;
+          const double arrowSize = baseWidth * 0.35;
 
-          return Flex(
-            direction: Axis.horizontal,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                flex: 3,
-                child: Container(
-                  color: customTheme.backgroundColor,
-                  child: Stack(
-                    children: <Widget>[
-                      DrawnClockBase(
-                        accentColor: customTheme.accentColor,
-                        primaryColor: customTheme.primaryColor,
-                        tickColor: customTheme.indicatorColor,
-                        baseWidth: baseWidth,
-                      ),
-                      DrawnHoursRing(
-                        arrowSize: arrowSize,
-                        angleRadians: currentHour * radiansPerHour,
-                        backgroundColor: customTheme.backgroundColor,
-                      ),
-                      DrawnMinutesRing(
-                        inset: baseWidth,
-                        arrowSize: arrowSize,
-                        angleRadians: _now.minute * radiansPerTick,
-                        backgroundColor: customTheme.backgroundColor,
-                      ),
-                    ],
+          /// adding [ClipRect] widget here is used for setting a boundary to the [CustomPainter]
+          /// according to the docs (https://api.flutter.dev/flutter/widgets/ClipRect-class.html)
+          /// several widgets are commonly painting outside their boundaries and [ClipRect] can prevent
+          /// that from happening.
+          return ClipRect(
+            child: Flex(
+              direction: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    color: customTheme.backgroundColor,
+                    child: Stack(
+                      children: <Widget>[
+                        DrawnClockBase(
+                          accentColor: customTheme.accentColor,
+                          primaryColor: customTheme.primaryColor,
+                          tickColor: customTheme.indicatorColor,
+                          baseWidth: baseWidth,
+                        ),
+                        DrawnHoursRing(
+                          arrowSize: arrowSize,
+                          angleRadians: currentHour * radiansPerHour,
+                          backgroundColor: customTheme.backgroundColor,
+                        ),
+                        DrawnMinutesRing(
+                          inset: baseWidth,
+                          arrowSize: arrowSize,
+                          angleRadians: _now.minute * radiansPerTick,
+                          backgroundColor: customTheme.backgroundColor,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  color: customTheme.highlightColor,
-                  child: AdditionalInfo(
-                    iconColor: customTheme.backgroundColor,
-                    textColor: customTheme.primaryColor,
-                    temperature: _temperature,
-                    temperatureMax: _temperatureMax,
-                    temperatureMin: _temperatureMin,
-                    condition: _condition,
-                    conditionString: _conditionString,
-                    location: _location,
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    color: Colors.transparent,
+                    child: AdditionalInfo(
+                      iconColor: customTheme.backgroundColor,
+                      textColor: customTheme.primaryColor,
+                      temperature: _temperature,
+                      temperatureMax: _temperatureMax,
+                      temperatureMin: _temperatureMin,
+                      condition: _condition,
+                      conditionString: _conditionString,
+                      location: _location,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
