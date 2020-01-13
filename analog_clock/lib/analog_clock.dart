@@ -102,10 +102,10 @@ class _AnalogClockState extends State<AnalogClock> {
             backgroundColor: Colors.grey[200],
           )
         : Theme.of(context).copyWith(
-            primaryColor: Colors.white70,
-            highlightColor: Colors.grey[200],
-            indicatorColor: Colors.black38,
-            accentColor: Colors.lightGreen,
+            primaryColor: Colors.red[900],
+            highlightColor: Colors.grey[400],
+            indicatorColor: Colors.blueGrey[300],
+            accentColor: Colors.grey[300],
             backgroundColor: Colors.blueGrey[900],
           );
 
@@ -119,7 +119,10 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
+          /// width of the clock-face ring
           const double baseWidth = 90.0;
+
+          /// by using 35% of the baseWidth we ensure that the arrow-points never reach each other
           const double arrowSize = baseWidth * 0.35;
 
           /// adding [ClipRect] widget here is used for setting a boundary to the [CustomPainter]
@@ -161,6 +164,7 @@ class _AnalogClockState extends State<AnalogClock> {
                 Expanded(
                   flex: 2,
                   child: Container(
+                    /// this should be transparent for letting the other part paint the stylish separation
                     color: Colors.transparent,
                     child: AdditionalInfo(
                       iconColor: customTheme.backgroundColor,

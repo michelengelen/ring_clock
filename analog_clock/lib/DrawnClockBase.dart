@@ -113,7 +113,7 @@ class _ClockBasePainter extends CustomPainter {
 
     for (int i = 0; i < 60; i++) {
       /// increase the strokeWidth of the hour tick marker
-      tickPaint.strokeWidth = i % 5 == 0 ? 8.0 : 2.0;
+      tickPaint.strokeWidth = i % 5 == 0 ? 12.0 : 2.0;
 
       /// draw the tick to the canvas
       /// ticks will be drawn centered to the baseWidth
