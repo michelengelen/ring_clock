@@ -167,7 +167,7 @@ class _AnalogClockState extends State<AnalogClock> {
                     /// this should be transparent for letting the other part paint the stylish separation
                     color: Colors.transparent,
                     child: AdditionalInfo(
-                      iconColor: customTheme.backgroundColor,
+                      iconColor: customTheme.primaryColor,
                       textColor: customTheme.primaryColor,
                       temperature: _temperature,
                       temperatureMax: _temperatureMax,
