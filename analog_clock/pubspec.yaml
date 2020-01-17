@@ -129,3 +129,7 @@ flutter:
         - asset: assets/fonts/Source_Sans_Pro/SourceSansPro-BlackItalic.ttf
           style: italic
           weight: 900
+    - family: Forecast
+      fonts:
+        - asset: assets/fonts/ForecastFont/forecastfont.ttf
+          weight: 400

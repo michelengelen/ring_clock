@@ -1,52 +1,7 @@
+import 'package:analog_clock/ForecastIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-String getWeatherIcon(WeatherCondition condition) {
-  switch (condition) {
-    case WeatherCondition.cloudy:
-      return '\u{f002}';
-      break;
-    case WeatherCondition.foggy:
-      return '\u{f003}';
-      break;
-    case WeatherCondition.rainy:
-      return '\u{f008}';
-      break;
-    case WeatherCondition.snowy:
-      return '\u{f00a}';
-      break;
-    case WeatherCondition.thunderstorm:
-      return '\u{f010}';
-      break;
-    case WeatherCondition.sunny:
-    default:
-      return '\u{f00d}';
-  }
-}
-
-IconData getWeatherIcon2(WeatherCondition condition) {
-  switch (condition) {
-    case WeatherCondition.cloudy:
-      return FontAwesomeIcons.cloud;
-      break;
-    case WeatherCondition.foggy:
-      return FontAwesomeIcons.smog;
-      break;
-    case WeatherCondition.rainy:
-      return FontAwesomeIcons.cloudRain;
-      break;
-    case WeatherCondition.snowy:
-      return FontAwesomeIcons.snowflake;
-      break;
-    case WeatherCondition.thunderstorm:
-      return FontAwesomeIcons.bolt;
-      break;
-    case WeatherCondition.sunny:
-    default:
-      return FontAwesomeIcons.sun;
-  }
-}
 
 class AdditionalInfo extends StatelessWidget {
   const AdditionalInfo({
@@ -58,6 +13,7 @@ class AdditionalInfo extends StatelessWidget {
     @required this.location,
     @required this.conditionString,
     @required this.condition,
+    @required this.daytime,
   });
 
   final Color iconColor;
@@ -68,15 +24,10 @@ class AdditionalInfo extends StatelessWidget {
   final String location;
   final String conditionString;
   final WeatherCondition condition;
+  final Daytime daytime;
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle _iconStyle = TextStyle(
-      fontFamily: 'WeatherIcons',
-      color: iconColor,
-      fontSize: 30,
-    );
-
     final TextStyle _textStyle = TextStyle(
       fontFamily: 'SourceSansPro',
       fontWeight: FontWeight.w900,
@@ -86,45 +37,39 @@ class AdditionalInfo extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final double width = constraints.maxWidth;
+//        final double width = constraints.maxWidth;
 
         return Stack(
           children: <Widget>[
-            Positioned(
-              top: -width / 3,
-              right: -width / 3,
-              child: Text(
-                getWeatherIcon(condition),
-                style: _iconStyle.copyWith(fontSize: width * 0.75),
-              ),
-//              child: Icon(
-//                getWeatherIcon2(condition),
-//                color: iconColor,
-//                size: width,
-//              ),
-            ),
             Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(12),
-                        child: Text(
-                          getWeatherIcon(condition),
-                          style: _iconStyle.copyWith(fontSize: 130),
+                        child: ForecastIcon(
+                          size: 260.0,
+                          weather: condition,
+                          daytime: daytime,
+                          cloudColor: Colors.grey[700],
+                          sunColor: Colors.yellow,
+                          moonColor: Colors.blue[100],
+                          rainColor: Colors.blue,
+                          snowColor: Colors.white,
+                          thunderColor: Colors.yellow[700],
                         ),
                       ),
-                      Text(
-                        conditionString,
-                        style: _textStyle,
-                      ),
+//                      Text(
+//                        conditionString,
+//                        style: _textStyle,
+//                      ),
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.all(2),

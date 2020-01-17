@@ -13,11 +13,9 @@ class DrawnMinutesRing extends StatefulWidget {
     @required this.inset,
     @required this.angleRadians,
     @required this.arrowSize,
-    @required this.backgroundColor,
   })  : assert(inset != null),
         assert(angleRadians != null),
-        assert(arrowSize != null),
-        assert(backgroundColor != null);
+        assert(arrowSize != null);
 
   /// the current angle
   final double angleRadians;
@@ -28,9 +26,6 @@ class DrawnMinutesRing extends StatefulWidget {
   /// the amount of space between the rings
   /// (should be equal to the baseWidth of the [DrawnClockBase])
   final double inset;
-
-  /// rhe backgroundColor from the customTheme
-  final Color backgroundColor;
 
   @override
   State<StatefulWidget> createState() => _DrawnMinutesRingState();
@@ -105,7 +100,7 @@ class _DrawnMinutesRingState extends State<DrawnMinutesRing> with SingleTickerPr
             inset: widget.inset,
             angleRadians: _animation.value,
             arrowSize: widget.arrowSize,
-            backgroundColor: widget.backgroundColor,
+            backgroundColor: Theme.of(context).backgroundColor,
           ),
         ),
       ),

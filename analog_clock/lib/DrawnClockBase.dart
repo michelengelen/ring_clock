@@ -142,18 +142,9 @@ class _ClockBasePainter extends CustomPainter {
 /// Implementation class for the [_ClockBasePainter]
 class DrawnClockBase extends StatelessWidget {
   const DrawnClockBase({
-    @required this.primaryColor,
-    @required this.accentColor,
-    @required this.tickColor,
     @required this.baseWidth,
-  })  : assert(primaryColor != null),
-        assert(accentColor != null),
-        assert(tickColor != null),
-        assert(baseWidth != null);
+  })  : assert(baseWidth != null);
 
-  final Color primaryColor;
-  final Color accentColor;
-  final Color tickColor;
   final double baseWidth;
 
   @override
@@ -162,9 +153,9 @@ class DrawnClockBase extends StatelessWidget {
       child: SizedBox.expand(
         child: CustomPaint(
           painter: _ClockBasePainter(
-            primaryColor: primaryColor,
-            accentColor: accentColor,
-            tickColor: tickColor,
+            primaryColor: Theme.of(context).primaryColor,
+            accentColor: Theme.of(context).accentColor,
+            tickColor: Theme.of(context).indicatorColor,
             baseWidth: baseWidth,
           ),
         ),

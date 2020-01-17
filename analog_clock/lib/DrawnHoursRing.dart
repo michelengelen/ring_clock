@@ -12,19 +12,14 @@ class DrawnHoursRing extends StatefulWidget {
   const DrawnHoursRing({
     @required this.angleRadians,
     @required this.arrowSize,
-    @required this.backgroundColor,
   })  : assert(angleRadians != null),
-        assert(arrowSize != null),
-        assert(backgroundColor != null);
+        assert(arrowSize != null);
 
   /// the current angle
   final double angleRadians;
 
   /// arrow-size
   final double arrowSize;
-
-  /// rhe backgroundColor from the customTheme
-  final Color backgroundColor;
 
   @override
   State<StatefulWidget> createState() => _DrawnHoursRingState();
@@ -97,7 +92,7 @@ class _DrawnHoursRingState extends State<DrawnHoursRing> with SingleTickerProvid
           painter: OuterCirclePainter(
             angleRadians: _animation.value,
             arrowSize: widget.arrowSize,
-            backgroundColor: widget.backgroundColor,
+            backgroundColor: Theme.of(context).backgroundColor,
           ),
         ),
       ),

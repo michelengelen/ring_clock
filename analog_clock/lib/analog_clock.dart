@@ -8,6 +8,7 @@ import 'package:analog_clock/AdditionInfo.dart';
 import 'package:analog_clock/DrawnClockBase.dart';
 import 'package:analog_clock/DrawnHoursRing.dart';
 import 'package:analog_clock/DrawnMinutesRing.dart';
+import 'package:analog_clock/ForecastIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clock_helper/model.dart';
@@ -42,6 +43,7 @@ class _AnalogClockState extends State<AnalogClock> {
   String _conditionString = '';
   String _location = '';
   Timer _timer;
+  Daytime _daytime = Daytime.day;
 
   @override
   void initState() {
@@ -76,6 +78,7 @@ class _AnalogClockState extends State<AnalogClock> {
       _condition = widget.model.weatherCondition;
       _conditionString = widget.model.weatherString;
       _location = widget.model.location;
+      _daytime = _now.hour > 6 || _now.hour < 18 ? Daytime.day : Daytime.night;
     });
   }
 
@@ -117,71 +120,74 @@ class _AnalogClockState extends State<AnalogClock> {
         label: 'Analog clock with time $time',
         value: time,
       ),
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          /// width of the clock-face ring
-          const double baseWidth = 90.0;
+      child: Theme(
+        data: customTheme,
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            print(constraints.maxWidth / 12);
 
-          /// by using 35% of the baseWidth we ensure that the arrow-points never reach each other
-          const double arrowSize = baseWidth * 0.35;
+            /// width of the clock-face ring
+            final double baseWidth = constraints.maxWidth / 12;
 
-          /// adding [ClipRect] widget here is used for setting a boundary to the [CustomPainter]
-          /// according to the docs (https://api.flutter.dev/flutter/widgets/ClipRect-class.html)
-          /// several widgets are commonly painting outside their boundaries and [ClipRect] can prevent
-          /// that from happening.
-          return ClipRect(
-            child: Flex(
-              direction: Axis.horizontal,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    color: customTheme.backgroundColor,
-                    child: Stack(
-                      children: <Widget>[
-                        DrawnClockBase(
-                          accentColor: customTheme.accentColor,
-                          primaryColor: customTheme.primaryColor,
-                          tickColor: customTheme.indicatorColor,
-                          baseWidth: baseWidth,
-                        ),
-                        DrawnHoursRing(
-                          arrowSize: arrowSize,
-                          angleRadians: currentHour * radiansPerHour,
-                          backgroundColor: customTheme.backgroundColor,
-                        ),
-                        DrawnMinutesRing(
-                          inset: baseWidth,
-                          arrowSize: arrowSize,
-                          angleRadians: _now.minute * radiansPerTick,
-                          backgroundColor: customTheme.backgroundColor,
-                        ),
-                      ],
+            /// by using 35% of the baseWidth we ensure that the arrow-points never reach each other
+            final double arrowSize = baseWidth * 0.35;
+
+            /// adding [ClipRect] widget here is used for setting a boundary to the [CustomPainter]
+            /// according to the docs (https://api.flutter.dev/flutter/widgets/ClipRect-class.html)
+            /// several widgets are commonly painting outside their boundaries and [ClipRect] can prevent
+            /// that from happening.
+            /// We still want to paint the right fancy material-style separation so we only use
+            /// this on the outer container to prevent overflow
+            return ClipRect(
+              child: Flex(
+                direction: Axis.horizontal,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      color: customTheme.backgroundColor,
+                      child: Stack(
+                        children: <Widget>[
+                          DrawnClockBase(
+                            baseWidth: baseWidth,
+                          ),
+                          DrawnHoursRing(
+                            arrowSize: arrowSize,
+                            angleRadians: currentHour * radiansPerHour,
+                          ),
+                          DrawnMinutesRing(
+                            inset: baseWidth,
+                            arrowSize: arrowSize,
+                            angleRadians: _now.minute * radiansPerTick,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    /// this should be transparent for letting the other part paint the stylish separation
-                    color: Colors.transparent,
-                    child: AdditionalInfo(
-                      iconColor: customTheme.primaryColor,
-                      textColor: customTheme.primaryColor,
-                      temperature: _temperature,
-                      temperatureMax: _temperatureMax,
-                      temperatureMin: _temperatureMin,
-                      condition: _condition,
-                      conditionString: _conditionString,
-                      location: _location,
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      /// this should be transparent for letting the other part paint the stylish separation
+                      color: Colors.transparent,
+                      child: AdditionalInfo(
+                        iconColor: customTheme.primaryColor,
+                        textColor: customTheme.primaryColor,
+                        temperature: _temperature,
+                        temperatureMax: _temperatureMax,
+                        temperatureMin: _temperatureMin,
+                        condition: _condition,
+                        conditionString: _conditionString,
+                        location: _location,
+                        daytime: _daytime,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
