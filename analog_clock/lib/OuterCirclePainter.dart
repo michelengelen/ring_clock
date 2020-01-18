@@ -66,8 +66,10 @@ class OuterCirclePainter extends CustomPainter {
       ..lineTo(arrowPointOffset.dx, arrowPointOffset.dy)
       ..close();
 
+    /// keep the size consistent on different screen-sizes
     final double separatorWidth = width / 12;
 
+    /// draw the outer border a bit more stylish
     final Path _fillPath = Path()
       ..moveTo(0.0, -20.0)
       ..lineTo(width + (separatorWidth * 1.25), -20.0)
