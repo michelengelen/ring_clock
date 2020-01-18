@@ -41,34 +41,10 @@ class _ClockBasePainter extends CustomPainter {
     /// leave 10% padding on the shortest side
     final double radius = math.min(width * 0.4, height * 0.4);
 
-    /// [Rect] to draw the gradient
-    final Rect rect = Rect.fromCircle(center: center, radius: radius);
-
-    /// Color list to be used in the clock-base gradient
-    final List<Color> _gradientColors = <Color>[
-      primaryColor,
-      primaryColor,
-      primaryColor,
-    ];
-
-    /// corresponding color-stops
-    /// calculation is for only filling the clock-base
-    final List<double> _gradientStops = <double>[
-      (radius - baseWidth) / radius,
-      (radius - baseWidth / 2.0) / radius,
-      1.0,
-    ];
-
-    /// the complete [Gradient] to fill the clock-base
-    final Gradient _fillGradient = RadialGradient(
-      colors: _gradientColors,
-      stops: _gradientStops,
-    );
-
     /// clock-base Paint
     final Paint _fillPaint = Paint()
       ..style = PaintingStyle.fill
-      ..shader = _fillGradient.createShader(rect);
+      ..color = primaryColor;
 
     /// keep the size consistent on different screen-sizes
     final double separatorWidth = width / 12;
@@ -81,9 +57,6 @@ class _ClockBasePainter extends CustomPainter {
       ..lineTo(0.0, height + 20.0)
       ..lineTo(0.0, 0.0)
       ..close();
-
-//    print('width is: $width');
-//    print('separatorWidth is: $separatorWidth');
 
     /// create a second [Path] for adding a bit of depth to the info section
     final Path _accentPath = Path()

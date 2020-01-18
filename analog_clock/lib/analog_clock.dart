@@ -90,7 +90,7 @@ class _AnalogClockState extends State<AnalogClock> {
       // Update once per second. Make sure to do it at the beginning of each
       // new second, so that the clock is accurate.
       _timer = Timer(
-        Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
+        const Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
       );
     });
@@ -100,10 +100,10 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget build(BuildContext context) {
     final ThemeData customTheme = Theme.of(context).brightness == Brightness.light
         ? ThemeData(
-            primarySwatch: Colors.lime,
-            accentColor: Colors.brown[700],
-            highlightColor: Colors.grey[800],
-            indicatorColor: Colors.white30,
+            primarySwatch: Colors.red,
+            accentColor: Colors.grey[800],
+            highlightColor: Colors.grey[500],
+            indicatorColor: Colors.grey[800],
             backgroundColor: Colors.grey[200],
             splashColor: Colors.blueAccent,
           )
@@ -119,6 +119,7 @@ class _AnalogClockState extends State<AnalogClock> {
     final String time = DateFormat.Hms().format(DateTime.now());
     final int currentHour = _now.hour >= 12 ? _now.hour - 12 : _now.hour;
 
+    /// Use a [Theme] so that the provided [ThemeData] is accessible with `Theme.of(context)`
     return Theme(
       data: customTheme,
       child: LayoutBuilder(
