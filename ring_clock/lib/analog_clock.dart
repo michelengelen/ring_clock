@@ -80,7 +80,7 @@ class _AnalogClockState extends State<AnalogClock> {
       _condition = widget.model.weatherCondition;
       _conditionString = widget.model.weatherString;
       _location = widget.model.location;
-      _daytime = _now.hour > 6 || _now.hour < 18 ? Daytime.day : Daytime.night;
+      _daytime = _now.hour > 6 && _now.hour < 18 ? Daytime.day : Daytime.night;
     });
   }
 
