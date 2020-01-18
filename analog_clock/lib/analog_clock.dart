@@ -36,9 +36,8 @@ class AnalogClock extends StatefulWidget {
 
 class _AnalogClockState extends State<AnalogClock> {
   DateTime _now = DateTime.now();
-  String _temperature = '';
-  String _temperatureMin = '';
-  String _temperatureMax = '';
+  TemperatureInfo _temperatureInfo =
+      TemperatureInfo(temperature: 0.0, temperatureMin: 0.0, temperatureMax: 0.0, temperatureUnit: '');
   WeatherCondition _condition = WeatherCondition.sunny;
   String _conditionString = '';
   String _location = '';
@@ -72,9 +71,12 @@ class _AnalogClockState extends State<AnalogClock> {
 
   void _updateModel() {
     setState(() {
-      _temperature = widget.model.temperatureString;
-      _temperatureMax = widget.model.highString;
-      _temperatureMin = widget.model.lowString;
+      _temperatureInfo = TemperatureInfo(
+        temperature: widget.model.temperature,
+        temperatureMax: widget.model.high,
+        temperatureMin: widget.model.low,
+        temperatureUnit: widget.model.unitString,
+      );
       _condition = widget.model.weatherCondition;
       _conditionString = widget.model.weatherString;
       _location = widget.model.location;
@@ -97,19 +99,21 @@ class _AnalogClockState extends State<AnalogClock> {
   @override
   Widget build(BuildContext context) {
     final ThemeData customTheme = Theme.of(context).brightness == Brightness.light
-        ? Theme.of(context).copyWith(
-            primaryColor: Colors.brown[700],
+        ? ThemeData(
+            primarySwatch: Colors.lime,
+            accentColor: Colors.brown[700],
             highlightColor: Colors.grey[800],
             indicatorColor: Colors.white30,
-            accentColor: Colors.lime,
             backgroundColor: Colors.grey[200],
+            splashColor: Colors.blueAccent,
           )
-        : Theme.of(context).copyWith(
-            primaryColor: Colors.red[900],
+        : ThemeData(
+            primarySwatch: Colors.red,
+            accentColor: Colors.grey[300],
             highlightColor: Colors.grey[400],
             indicatorColor: Colors.blueGrey[300],
-            accentColor: Colors.grey[300],
             backgroundColor: Colors.blueGrey[900],
+            splashColor: Colors.blueAccent,
           );
 
     final String time = DateFormat.Hms().format(DateTime.now());
@@ -124,8 +128,6 @@ class _AnalogClockState extends State<AnalogClock> {
         data: customTheme,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            print(constraints.maxWidth / 12);
-
             /// width of the clock-face ring
             final double baseWidth = constraints.maxWidth / 12;
 
@@ -171,11 +173,7 @@ class _AnalogClockState extends State<AnalogClock> {
                       /// this should be transparent for letting the other part paint the stylish separation
                       color: Colors.transparent,
                       child: AdditionalInfo(
-                        iconColor: customTheme.primaryColor,
-                        textColor: customTheme.primaryColor,
-                        temperature: _temperature,
-                        temperatureMax: _temperatureMax,
-                        temperatureMin: _temperatureMin,
+                        temperatureInfo: _temperatureInfo,
                         condition: _condition,
                         conditionString: _conditionString,
                         location: _location,
@@ -191,4 +189,19 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
     );
   }
+}
+
+/// helper class for passing the temperature to the [AdditionalInfo] class
+class TemperatureInfo {
+  TemperatureInfo({
+    @required this.temperature,
+    @required this.temperatureMin,
+    @required this.temperatureMax,
+    @required this.temperatureUnit,
+  });
+
+  final double temperature;
+  final double temperatureMin;
+  final double temperatureMax;
+  final String temperatureUnit;
 }

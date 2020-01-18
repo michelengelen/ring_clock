@@ -26,7 +26,8 @@ class ForecastIcon extends StatelessWidget {
   final Color thunderColor;
 
   List<Widget> _getForecastIcons() {
-    final TextStyle _baseStyle = TextStyle(fontFamily: 'Forecast', fontSize: size, color: cloudColor, fontWeight: FontWeight.w400);
+    final TextStyle _baseStyle =
+        TextStyle(fontFamily: 'Forecast', fontSize: size, color: cloudColor, fontWeight: FontWeight.w400);
     final TextStyle _cloudStyle = _baseStyle.copyWith(color: cloudColor);
     final TextStyle _sunStyle = _baseStyle.copyWith(color: sunColor ?? cloudColor);
     final TextStyle _moonStyle = _baseStyle.copyWith(color: moonColor ?? sunColor ?? cloudColor);
@@ -35,80 +36,56 @@ class ForecastIcon extends StatelessWidget {
     final TextStyle _snowStyle = _baseStyle.copyWith(color: snowColor ?? rainColor ?? cloudColor);
 
     List<Widget> forecastIcons = <Widget>[
-      Text(
-        '\u{f105}',
-        style: _cloudStyle
-      ),
+      Text('\u{f105}', style: _cloudStyle),
     ];
     switch (weather) {
       case WeatherCondition.sunny:
         final String charCode = daytime == Daytime.day ? '\u{f113}' : '\u{f10d}';
         final TextStyle style = daytime == Daytime.day ? _sunStyle : _moonStyle;
         forecastIcons = <Widget>[
-          Text(
-            charCode,
-            style: style
-          ),
+          Text(charCode, style: style),
         ];
         break;
       case WeatherCondition.cloudy:
         forecastIcons = <Widget>[
-          Text(
-            '\u{f106}',
-            style: _cloudStyle
-          ),
+          Text('\u{f106}', style: _cloudStyle),
         ];
         break;
       case WeatherCondition.foggy:
         forecastIcons = <Widget>[
-          Text(
-            '\u{f108}',
-            style: _cloudStyle
-          ),
+          Text('\u{f108}', style: _cloudStyle),
         ];
         break;
       case WeatherCondition.rainy:
         forecastIcons.add(
-          Text(
-            '\u{f104}',
-            style: _rainStyle
-          ),
+          Text('\u{f104}', style: _rainStyle),
         );
         break;
       case WeatherCondition.snowy:
         forecastIcons.add(
-          Text(
-            '\u{f10b}',
-            style: _snowStyle
-          ),
+          Text('\u{f10b}', style: _snowStyle),
         );
         break;
       case WeatherCondition.thunderstorm:
         forecastIcons.add(
-            Text(
-              '\u{f114}',
-              style: _thunderStyle
-            ),
+          Text('\u{f114}', style: _thunderStyle),
         );
         break;
       case WeatherCondition.windy:
         forecastIcons.add(
-          Text(
-            '\u{f115}',
-            style: _thunderStyle
-          ),
+          Text('\u{f115}', style: _thunderStyle),
         );
         break;
     }
 
-    if (daytime != null && weather != WeatherCondition.sunny && weather != WeatherCondition.foggy && weather != WeatherCondition.cloudy) {
+    if (daytime != null &&
+        weather != WeatherCondition.sunny &&
+        weather != WeatherCondition.foggy &&
+        weather != WeatherCondition.cloudy) {
       final String daytimeChar = daytime == Daytime.day ? '\u{f101}' : '\u{f100}';
       final TextStyle daytimeStyle = daytime == Daytime.day ? _sunStyle : _moonStyle;
       forecastIcons.add(
-        Text(
-          daytimeChar,
-          style: daytimeStyle
-        ),
+        Text(daytimeChar, style: daytimeStyle),
       );
     }
 
@@ -120,14 +97,13 @@ class ForecastIcon extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      child: Stack(
-        children: _getForecastIcons(),
+      child: Center(
+        child: Stack(
+          children: _getForecastIcons(),
+        ),
       ),
     );
   }
 }
 
-enum Daytime {
-  day,
-  night
-}
+enum Daytime { day, night }

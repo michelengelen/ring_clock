@@ -1,26 +1,19 @@
 import 'package:analog_clock/ForecastIcon.dart';
+import 'package:analog_clock/analog_clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AdditionalInfo extends StatelessWidget {
   const AdditionalInfo({
-    @required this.iconColor,
-    @required this.textColor,
-    @required this.temperature,
-    @required this.temperatureMin,
-    @required this.temperatureMax,
+    @required this.temperatureInfo,
     @required this.location,
     @required this.conditionString,
     @required this.condition,
     @required this.daytime,
   });
 
-  final Color iconColor;
-  final Color textColor;
-  final String temperature;
-  final String temperatureMin;
-  final String temperatureMax;
+  final TemperatureInfo temperatureInfo;
   final String location;
   final String conditionString;
   final WeatherCondition condition;
@@ -31,123 +24,159 @@ class AdditionalInfo extends StatelessWidget {
     final TextStyle _textStyle = TextStyle(
       fontFamily: 'SourceSansPro',
       fontWeight: FontWeight.w900,
-      color: textColor,
-      fontSize: 20,
+      color: Theme.of(context).primaryColor,
+      fontSize: 24,
     );
+
+    Widget _getTemperatureText(TemperatureType temperatureType) {
+      final TextStyle _temperatureValueStyle = _textStyle.copyWith(
+        fontSize: temperatureType == TemperatureType.current ? 60 : 24,
+      );
+
+      final TextStyle _temperatureUnitStyle = _temperatureValueStyle.copyWith(
+        color: Theme.of(context).primaryColorDark,
+        fontWeight: FontWeight.w300,
+      );
+
+      final List<Widget> _temperatureParts = <Widget>[];
+      String _temperatureValue;
+      switch (temperatureType) {
+        case TemperatureType.current:
+          _temperatureValue = temperatureInfo.temperature.toString();
+          break;
+        case TemperatureType.low:
+          _temperatureParts.add(
+            Container(
+              padding: const EdgeInsets.all(6),
+              child: Icon(
+                FontAwesomeIcons.temperatureLow,
+                color: Theme.of(context).accentColor,
+                size: 20,
+              ),
+            ),
+          );
+          _temperatureValue = temperatureInfo.temperatureMin.toString();
+          break;
+        case TemperatureType.high:
+          _temperatureParts.add(
+            Container(
+              padding: const EdgeInsets.all(6),
+              child: Icon(
+                FontAwesomeIcons.temperatureHigh,
+                color: Theme.of(context).accentColor,
+                size: 20,
+              ),
+            ),
+          );
+          _temperatureValue = temperatureInfo.temperatureMax.toString();
+          break;
+      }
+
+      _temperatureParts.addAll(<Widget>[
+        Text(
+          _temperatureValue,
+          style: _temperatureValueStyle,
+        ),
+        Text(
+          temperatureInfo.temperatureUnit,
+          style: _temperatureUnitStyle,
+        ),
+      ]);
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: _temperatureParts,
+      );
+    }
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-//        final double width = constraints.maxWidth;
+        final double width = constraints.maxWidth;
 
-        return Stack(
-          children: <Widget>[
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: ForecastIcon(
-                          size: 260.0,
-                          weather: condition,
-                          daytime: daytime,
-                          cloudColor: Colors.grey[700],
-                          sunColor: Colors.yellow,
-                          moonColor: Colors.blue[100],
-                          rainColor: Colors.blue,
-                          snowColor: Colors.white,
-                          thunderColor: Colors.yellow[700],
-                        ),
-                      ),
-//                      Text(
-//                        conditionString,
-//                        style: _textStyle,
-//                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(2),
-                        child: Icon(
-                          FontAwesomeIcons.mapMarkerAlt,
-                          color: iconColor,
-                          size: 40,
-                        ),
-                      ),
-                      Text(
-                        location,
-                        style: _textStyle,
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+        return Padding(
+          padding: const EdgeInsets.only(left: 72.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 36.0, horizontal: 24.0),
+                child: ForecastIcon(
+                  size: width * 0.6,
+                  weather: condition,
+                  daytime: daytime,
+                  cloudColor: Theme.of(context).accentColor,
+                  sunColor: Theme.of(context).primaryColor,
+                  moonColor: Theme.of(context).primaryColorDark,
+                  rainColor: Theme.of(context).splashColor,
+                  snowColor: Theme.of(context).primaryColorLight,
+                  thunderColor: Theme.of(context).primaryColor,
+                ),
+              ),
+              Divider(
+                height: 4,
+                thickness: 2,
+                indent: width / 5,
+                endIndent: width / 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    _getTemperatureText(TemperatureType.current),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text(
-                          temperature,
-                          style: _textStyle.copyWith(fontSize: 70),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
+                          child: _getTemperatureText(TemperatureType.low),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Icon(
-                                      FontAwesomeIcons.temperatureHigh,
-                                      color: iconColor,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  Text(
-                                    temperatureMax,
-                                    style: _textStyle.copyWith(color: textColor.withOpacity(0.5)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Icon(
-                                      FontAwesomeIcons.temperatureLow,
-                                      color: iconColor,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  Text(
-                                    temperatureMin,
-                                    style: _textStyle.copyWith(color: textColor.withOpacity(0.5)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
+                          child: _getTemperatureText(TemperatureType.high),
+                        ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              Divider(
+                height: 4,
+                thickness: 2,
+                indent: width / 5,
+                endIndent: width / 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      child: Icon(
+                        FontAwesomeIcons.mapMarkerAlt,
+                        color: Theme.of(context).accentColor,
+                        size: 40,
+                      ),
+                    ),
+                    Text(
+                      location,
+                      style: _textStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
   }
+}
+
+enum TemperatureType {
+  high,
+  low,
+  current,
 }

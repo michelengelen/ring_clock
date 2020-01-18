@@ -46,9 +46,9 @@ class _ClockBasePainter extends CustomPainter {
 
     /// Color list to be used in the clock-base gradient
     final List<Color> _gradientColors = <Color>[
-      accentColor,
-      accentColor,
-      accentColor,
+      primaryColor,
+      primaryColor,
+      primaryColor,
     ];
 
     /// corresponding color-stops
@@ -70,28 +70,33 @@ class _ClockBasePainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..shader = _fillGradient.createShader(rect);
 
+    final double separatorWidth = width / 12;
+
     /// create a [Path] for painting the [Gradient]
     final Path _fillPath = Path()
       ..moveTo(0.0, -20.0)
-      ..lineTo(width + (width / 20.0), -20.0)
-      ..lineTo(width + (width / 7.0), height)
-      ..lineTo(0.0, height)
+      ..lineTo(width + (separatorWidth * 0.8), -20.0)
+      ..lineTo(width + (separatorWidth * 1.25), height + 20.0)
+      ..lineTo(0.0, height + 20.0)
       ..lineTo(0.0, 0.0)
       ..close();
 
+//    print('width is: $width');
+//    print('separatorWidth is: $separatorWidth');
+
     /// create a second [Path] for adding a bit of depth to the info section
     final Path _accentPath = Path()
-      ..moveTo(width - 20.0, -20.0)
-      ..lineTo(width + (width / 5.0), -20.0)
-      ..lineTo(width + (width / 8.0), height)
-      ..lineTo(width - 20.0, height)
-      ..lineTo(width - 20.0, 0.0)
+      ..moveTo(width - separatorWidth, -20.0)
+      ..lineTo(width + (separatorWidth * 2), -20.0)
+      ..lineTo(width + (separatorWidth * 0.8), height)
+      ..lineTo(width - separatorWidth, height)
+      ..lineTo(width - separatorWidth, 0.0)
       ..close();
 
     /// first draw the shadow then draw the clock-background a layer above it
     canvas
       ..drawShadow(_accentPath, Colors.black, 6.0, true)
-      ..drawPath(_accentPath, Paint()..color = primaryColor)
+      ..drawPath(_accentPath, Paint()..color = accentColor)
       ..drawShadow(_fillPath, Colors.black, 6.0, true)
       ..drawPath(_fillPath, _fillPaint);
 
@@ -155,7 +160,7 @@ class DrawnClockBase extends StatelessWidget {
           painter: _ClockBasePainter(
             primaryColor: Theme.of(context).primaryColor,
             accentColor: Theme.of(context).accentColor,
-            tickColor: Theme.of(context).indicatorColor,
+            tickColor: Theme.of(context).primaryColorLight,
             baseWidth: baseWidth,
           ),
         ),

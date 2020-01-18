@@ -66,11 +66,13 @@ class OuterCirclePainter extends CustomPainter {
       ..lineTo(arrowPointOffset.dx, arrowPointOffset.dy)
       ..close();
 
+    final double separatorWidth = width / 12;
+
     final Path _fillPath = Path()
       ..moveTo(0.0, -20.0)
-      ..lineTo(width + (width / 4.5), -20.0)
-      ..lineTo(width, height)
-      ..lineTo(0.0, height)
+      ..lineTo(width + (separatorWidth * 1.25), -20.0)
+      ..lineTo(width - (separatorWidth * 0.25), height + 20.0)
+      ..lineTo(0.0, height + 20.0)
       ..lineTo(0.0, 0.0)
       ..close();
 
