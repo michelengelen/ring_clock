@@ -156,7 +156,8 @@ class _AnalogClockState extends State<AnalogClock> {
                           ),
                           DrawnHoursRing(
                             arrowSize: arrowSize,
-                            angleRadians: currentHour * radiansPerHour,
+                            angleRadians: currentHour * radiansPerHour +
+                              (_now.minute / 60) * radiansPerHour,
                           ),
                           DrawnMinutesRing(
                             inset: baseWidth,
