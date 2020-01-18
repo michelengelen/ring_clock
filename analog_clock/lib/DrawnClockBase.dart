@@ -70,6 +70,7 @@ class _ClockBasePainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..shader = _fillGradient.createShader(rect);
 
+    /// keep the size consistent on different screen-sizes
     final double separatorWidth = width / 12;
 
     /// create a [Path] for painting the [Gradient]
