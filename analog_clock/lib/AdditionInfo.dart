@@ -59,14 +59,15 @@ class AdditionalInfo extends StatelessWidget {
           break;
         case TemperatureType.low:
         case TemperatureType.high:
+
           /// if the type is not current define an icon to be added before the temperature value
           _temperatureParts.add(
             Container(
               padding: const EdgeInsets.all(6),
               child: Icon(
                 temperatureType == TemperatureType.low
-                  ? FontAwesomeIcons.longArrowAltDown
-                  : FontAwesomeIcons.longArrowAltUp,
+                    ? FontAwesomeIcons.longArrowAltDown
+                    : FontAwesomeIcons.longArrowAltUp,
                 color: Theme.of(context).accentColor,
                 size: 20,
               ),
@@ -75,8 +76,8 @@ class AdditionalInfo extends StatelessWidget {
 
           /// get the correct value
           _temperatureValue = temperatureType == TemperatureType.low
-            ? temperatureInfo.temperatureMin.toString()
-            : temperatureInfo.temperatureMax.toString();
+              ? temperatureInfo.temperatureMin.toString()
+              : temperatureInfo.temperatureMax.toString();
           break;
       }
 

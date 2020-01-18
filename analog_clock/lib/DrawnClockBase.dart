@@ -122,7 +122,7 @@ class _ClockBasePainter extends CustomPainter {
 class DrawnClockBase extends StatelessWidget {
   const DrawnClockBase({
     @required this.baseWidth,
-  })  : assert(baseWidth != null);
+  }) : assert(baseWidth != null);
 
   final double baseWidth;
 

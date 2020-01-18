@@ -39,7 +39,7 @@ class _DrawnHoursRingState extends State<DrawnHoursRing> with SingleTickerProvid
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1500),
     )..addListener(() {
         setState(() {});
       });
