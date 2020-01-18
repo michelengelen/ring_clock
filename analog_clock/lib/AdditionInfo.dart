@@ -5,6 +5,11 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+/// class that renders the additional info to the right of the clock
+///
+/// It takes in a [WeatherCondition] and [Daytime] to determine the
+/// correct [ForecastIcon], as well as a [TemperatureInfo] helper class
+/// for rendering the temperatures and location information
 class AdditionalInfo extends StatelessWidget {
   const AdditionalInfo({
     @required this.temperatureInfo,
@@ -29,50 +34,53 @@ class AdditionalInfo extends StatelessWidget {
       fontSize: 24,
     );
 
+    /// helper function to get the correct temperature strings with the correct styling
     Widget _getTemperatureText(TemperatureType temperatureType) {
+      /// basic temperature styles
       final TextStyle _temperatureValueStyle = _textStyle.copyWith(
-        fontSize: temperatureType == TemperatureType.current ? 60 : 24,
+        fontSize: temperatureType == TemperatureType.current ? 72 : 24,
       );
 
+      /// styles for the temperature unit
       final TextStyle _temperatureUnitStyle = _temperatureValueStyle.copyWith(
         color: Theme.of(context).primaryColorDark,
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w400,
       );
 
+      /// a List to gather all parts for the temperature
       final List<Widget> _temperatureParts = <Widget>[];
+
+      /// the temperature value
       String _temperatureValue;
+
       switch (temperatureType) {
         case TemperatureType.current:
           _temperatureValue = temperatureInfo.temperature.toString();
           break;
         case TemperatureType.low:
-          _temperatureParts.add(
-            Container(
-              padding: const EdgeInsets.all(6),
-              child: Icon(
-                FontAwesomeIcons.temperatureLow,
-                color: Theme.of(context).accentColor,
-                size: 20,
-              ),
-            ),
-          );
-          _temperatureValue = temperatureInfo.temperatureMin.toString();
-          break;
         case TemperatureType.high:
+          /// if the type is not current define an icon to be added before the temperature value
           _temperatureParts.add(
             Container(
               padding: const EdgeInsets.all(6),
               child: Icon(
-                FontAwesomeIcons.temperatureHigh,
+                temperatureType == TemperatureType.low
+                  ? FontAwesomeIcons.longArrowAltDown
+                  : FontAwesomeIcons.longArrowAltUp,
                 color: Theme.of(context).accentColor,
                 size: 20,
               ),
             ),
           );
-          _temperatureValue = temperatureInfo.temperatureMax.toString();
+
+          /// get the correct value
+          _temperatureValue = temperatureType == TemperatureType.low
+            ? temperatureInfo.temperatureMin.toString()
+            : temperatureInfo.temperatureMax.toString();
           break;
       }
 
+      /// combine all parts
       _temperatureParts.addAll(<Widget>[
         Text(
           _temperatureValue,
@@ -210,6 +218,8 @@ class AdditionalInfo extends StatelessWidget {
   }
 }
 
+/// helper enum to better determine which
+/// temperature we are looking to render
 enum TemperatureType {
   high,
   low,

@@ -108,7 +108,7 @@ class _AnalogClockState extends State<AnalogClock> {
             splashColor: Colors.blueAccent,
           )
         : ThemeData(
-            primarySwatch: Colors.red,
+            primarySwatch: Colors.lime,
             accentColor: Colors.grey[300],
             highlightColor: Colors.grey[400],
             indicatorColor: Colors.blueGrey[300],
