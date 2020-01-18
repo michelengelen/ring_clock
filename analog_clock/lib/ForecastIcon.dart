@@ -102,6 +102,7 @@ class ForecastIcon extends StatelessWidget {
 
     switch (weather) {
       case WeatherCondition.sunny:
+
         /// determine to show either a sun or a moon
         final String charCode = daytime == Daytime.day ? '\u{f113}' : '\u{f10d}';
         final TextStyle style = daytime == Daytime.day ? _sunStyle : _moonStyle;
@@ -145,9 +146,7 @@ class ForecastIcon extends StatelessWidget {
     /// Check if the icons that are used can take a moon or sun as an addition.
     /// Sadly the font does not provide this addition for the cloudy icon,
     /// so we have to exclude this as well
-    if (weather != WeatherCondition.sunny &&
-        weather != WeatherCondition.foggy &&
-        weather != WeatherCondition.cloudy) {
+    if (weather != WeatherCondition.sunny && weather != WeatherCondition.foggy && weather != WeatherCondition.cloudy) {
       final String daytimeChar = daytime == Daytime.day ? '\u{f101}' : '\u{f100}';
       final TextStyle daytimeStyle = daytime == Daytime.day ? _sunStyle : _moonStyle;
 
