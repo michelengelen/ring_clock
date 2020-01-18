@@ -119,34 +119,34 @@ class _AnalogClockState extends State<AnalogClock> {
     final String time = DateFormat.Hms().format(DateTime.now());
     final int currentHour = _now.hour >= 12 ? _now.hour - 12 : _now.hour;
 
-    return Semantics.fromProperties(
-      properties: SemanticsProperties(
-        label: 'Analog clock with time $time',
-        value: time,
-      ),
-      child: Theme(
-        data: customTheme,
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            /// width of the clock-face ring
-            final double baseWidth = constraints.maxWidth / 12;
+    return Theme(
+      data: customTheme,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          /// width of the clock-face ring
+          final double baseWidth = constraints.maxWidth / 12;
 
-            /// by using 35% of the baseWidth we ensure that the arrow-points never reach each other
-            final double arrowSize = baseWidth * 0.35;
+          /// by using 35% of the baseWidth we ensure that the arrow-points never reach each other
+          final double arrowSize = baseWidth * 0.35;
 
-            /// adding [ClipRect] widget here is used for setting a boundary to the [CustomPainter]
-            /// according to the docs (https://api.flutter.dev/flutter/widgets/ClipRect-class.html)
-            /// several widgets are commonly painting outside their boundaries and [ClipRect] can prevent
-            /// that from happening.
-            /// We still want to paint the right fancy material-style separation so we only use
-            /// this on the outer container to prevent overflow
-            return ClipRect(
-              child: Flex(
-                direction: Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
+          /// adding [ClipRect] widget here is used for setting a boundary to the [CustomPainter]
+          /// according to the docs (https://api.flutter.dev/flutter/widgets/ClipRect-class.html)
+          /// several widgets are commonly painting outside their boundaries and [ClipRect] can prevent
+          /// that from happening.
+          /// We still want to paint the right fancy material-style separation so we only use
+          /// this on the outer container to prevent overflow
+          return ClipRect(
+            child: Flex(
+              direction: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  flex: 3,
+                  child: Semantics.fromProperties(
+                    properties: SemanticsProperties(
+                      label: 'Analog clock with time $time',
+                      value: time,
+                    ),
                     child: Container(
                       color: customTheme.backgroundColor,
                       child: Stack(
@@ -167,25 +167,25 @@ class _AnalogClockState extends State<AnalogClock> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      /// this should be transparent for letting the other part paint the stylish separation
-                      color: Colors.transparent,
-                      child: AdditionalInfo(
-                        temperatureInfo: _temperatureInfo,
-                        condition: _condition,
-                        conditionString: _conditionString,
-                        location: _location,
-                        daytime: _daytime,
-                      ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    /// this should be transparent for letting the other part paint the stylish separation
+                    color: Colors.transparent,
+                    child: AdditionalInfo(
+                      temperatureInfo: _temperatureInfo,
+                      condition: _condition,
+                      conditionString: _conditionString,
+                      location: _location,
+                      daytime: _daytime,
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

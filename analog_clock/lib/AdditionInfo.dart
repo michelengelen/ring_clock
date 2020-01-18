@@ -1,6 +1,7 @@
 import 'package:analog_clock/ForecastIcon.dart';
 import 'package:analog_clock/analog_clock.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -100,16 +101,23 @@ class AdditionalInfo extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 36.0, horizontal: 24.0),
-                child: ForecastIcon(
-                  size: width * 0.6,
-                  weather: condition,
-                  daytime: daytime,
-                  cloudColor: Theme.of(context).accentColor,
-                  sunColor: Theme.of(context).primaryColor,
-                  moonColor: Theme.of(context).primaryColorDark,
-                  rainColor: Theme.of(context).splashColor,
-                  snowColor: Theme.of(context).primaryColorLight,
-                  thunderColor: Theme.of(context).primaryColor,
+                child: Semantics.fromProperties(
+                  properties: SemanticsProperties(
+                    label: 'Forecast Icon showing that it is currently $conditionString',
+                    value: conditionString,
+                  ),
+                  child: ForecastIcon(
+                    size: width * 0.6,
+                    weather: condition,
+                    daytime: daytime,
+                    baseColor: Theme.of(context).accentColor,
+                    cloudColor: Theme.of(context).accentColor,
+                    sunColor: Theme.of(context).primaryColor,
+                    moonColor: Theme.of(context).primaryColorDark,
+                    rainColor: Theme.of(context).splashColor,
+                    snowColor: Theme.of(context).primaryColorLight,
+                    thunderColor: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
               Divider(
@@ -123,18 +131,39 @@ class AdditionalInfo extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    _getTemperatureText(TemperatureType.current),
+                    Semantics.fromProperties(
+                      properties: SemanticsProperties(
+                        label:
+                            'Current temperature ${temperatureInfo.temperature.toString()}${temperatureInfo.temperatureUnit}',
+                        value: '${temperatureInfo.temperature.toString()}${temperatureInfo.temperatureUnit}',
+                      ),
+                      child: _getTemperatureText(TemperatureType.current),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
-                          child: _getTemperatureText(TemperatureType.low),
+                          child: Semantics.fromProperties(
+                            properties: SemanticsProperties(
+                              label:
+                                  'lowest temperature to be expected today is: ${temperatureInfo.temperatureMin.toString()}${temperatureInfo.temperatureUnit}',
+                              value: '${temperatureInfo.temperatureMin.toString()}${temperatureInfo.temperatureUnit}',
+                            ),
+                            child: _getTemperatureText(TemperatureType.low),
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
-                          child: _getTemperatureText(TemperatureType.high),
+                          child: Semantics.fromProperties(
+                            properties: SemanticsProperties(
+                              label:
+                                  'highest temperature to be expected today is: ${temperatureInfo.temperatureMax.toString()}${temperatureInfo.temperatureUnit}',
+                              value: '${temperatureInfo.temperatureMax.toString()}${temperatureInfo.temperatureUnit}',
+                            ),
+                            child: _getTemperatureText(TemperatureType.high),
+                          ),
                         ),
                       ],
                     ),
@@ -149,22 +178,28 @@ class AdditionalInfo extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      child: Icon(
-                        FontAwesomeIcons.mapMarkerAlt,
-                        color: Theme.of(context).accentColor,
-                        size: 40,
+                child: Semantics.fromProperties(
+                  properties: SemanticsProperties(
+                    label: 'Your current location is $location',
+                    value: location,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        child: Icon(
+                          FontAwesomeIcons.mapMarkerAlt,
+                          color: Theme.of(context).accentColor,
+                          size: 40,
+                        ),
                       ),
-                    ),
-                    Text(
-                      location,
-                      style: _textStyle,
-                    ),
-                  ],
+                      Text(
+                        location,
+                        style: _textStyle,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
