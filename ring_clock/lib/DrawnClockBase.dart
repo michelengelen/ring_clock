@@ -134,7 +134,7 @@ class DrawnClockBase extends StatelessWidget {
           painter: _ClockBasePainter(
             primaryColor: Theme.of(context).primaryColor,
             accentColor: Theme.of(context).accentColor,
-            tickColor: Theme.of(context).primaryColorLight,
+            tickColor: Theme.of(context).indicatorColor,
             baseWidth: baseWidth,
           ),
         ),

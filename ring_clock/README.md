@@ -1,10 +1,12 @@
-# Analog Clock
+# Ring Clock
 
-This app is an example of an analog clock.
+This app is my entry for the [flutter clock challenge](https://flutter.dev/clock).
 It has a light theme and a dark theme, and displays sample weather and location data.
 
-<img src='analog.gif' width='350'>
+It makes use of the awesome [Forecast Font](https://webdesignbestfirm.com/forecastfont.html) for displaying the forecast icons.
 
-<img src='analog_dark.png' width='350'>
+### Light Theme
+![alt text](ring_clock_screenshot_light.png)
 
-<img src='analog_light.png' width='350'>
+### Dark Theme
+![alt text](ring_clock_screenshot_dark.png)

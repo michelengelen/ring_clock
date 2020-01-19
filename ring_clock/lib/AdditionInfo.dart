@@ -153,7 +153,7 @@ class AdditionalInfo extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
+                          padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 18.0),
                           child: Semantics.fromProperties(
                             properties: SemanticsProperties(
                               label:
@@ -164,7 +164,7 @@ class AdditionalInfo extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
+                          padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 18.0),
                           child: Semantics.fromProperties(
                             properties: SemanticsProperties(
                               label:

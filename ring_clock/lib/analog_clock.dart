@@ -100,18 +100,16 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget build(BuildContext context) {
     final ThemeData customTheme = Theme.of(context).brightness == Brightness.light
         ? ThemeData(
-            primarySwatch: Colors.red,
+            primarySwatch: Colors.pink,
             accentColor: Colors.grey[800],
-            highlightColor: Colors.grey[500],
-            indicatorColor: Colors.grey[800],
+            indicatorColor: Colors.grey[200],
             backgroundColor: Colors.grey[200],
             splashColor: Colors.blueAccent,
           )
         : ThemeData(
             primarySwatch: Colors.lime,
             accentColor: Colors.grey[300],
-            highlightColor: Colors.grey[400],
-            indicatorColor: Colors.blueGrey[300],
+            indicatorColor: Colors.blueGrey[900].withOpacity(0.75),
             backgroundColor: Colors.blueGrey[900],
             splashColor: Colors.blueAccent,
           );
